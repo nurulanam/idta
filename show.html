@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Submission Review (Test Mode) — iDTA</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/include.js"></script>
+</head>
+
+<body>
+
+    <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
+    <div id="site-header"></div>
+    <script>includeHTML('site-header', 'header.html');</script>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="h2-lg">Submission Review</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="breadcrumb-sep">/</span>
+                <span class="breadcrumb-current">Submission Review</span>
+            </div>
+            <p class="lead page-header-lead">Test Mode — this shows exactly what your application submitted, read
+                back from the stored JSON. No payment was processed and nothing was sent anywhere.</p>
+        </div>
+    </section>
+
+    <!-- REVIEW -->
+    <section class="legal-section">
+        <div class="container">
+            <div class="review-wrap">
+                <div class="review-empty" id="reviewEmpty" hidden>
+                    <p>No submission found. Start an application to see its data here.</p>
+                    <a href="application.html" class="btn mt-22">Go to Application
+                        <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            aria-hidden="true">
+                            <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></a>
+                </div>
+                <div id="reviewContent" hidden></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER (injected from footer.html) -->
+    <div id="site-footer"></div>
+    <script>includeHTML('site-footer', 'footer.html');</script>
+
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/show.js"></script>
+</body>
+
+</html>

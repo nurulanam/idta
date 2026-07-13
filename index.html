@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>iDTA — Drive Anywhere With Confidence</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/include.js"></script>
+</head>
+
+<body>
+
+    <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
+    <div id="site-header"></div>
+    <script>includeHTML('site-header', 'header.html');</script>
+
+    <!-- HERO -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-grid">
+                <!-- left copy -->
+                <div class="hero-copy">
+                    <div class="hero-trust">
+                        <span><img src="assets/images/icons/trusted by.svg" alt=""></span>
+                        <span class="trust-text">Trusted by <strong class="fw-600">179,000+
+                                Drivers</strong></span>
+                    </div>
+                    <h1 class="h1-hero">Drive Anywhere With Confidence.</h1>
+                    <p class="lead hero-lead mt-26">
+                        Everything you need to drive abroad: expert guides, road signs, travel checklists, and
+                        multilingual driver's licence translations.</p>
+                    <div class="hero-checklist">
+                        <div class="checklist-item"><span><img src="assets/images/icons/check-mark.svg"
+                                    alt=""></span><span>Delivered
+                                digitally in 5 minutes</span></div>
+                        <div class="checklist-item"><span><img src="assets/images/icons/check-mark.svg"
+                                    alt=""></span><span>We Ship
+                                Anywhere You Travel</span></div>
+                        <div class="checklist-item"><span><img src="assets/images/icons/check-mark.svg"
+                                    alt=""></span><span>Valid in
+                                195+ countries</span></div>
+                        <div class="checklist-item"><span><img src="assets/images/icons/check-mark.svg"
+                                    alt=""></span><span>24/7 live
+                                chat support</span></div>
+                    </div>
+                    <a href="#" class="btn-outline mt-40">Browse
+                        Driving Guides <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            aria-hidden="true">
+                            <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></a>
+                </div>
+                <!-- road -->
+                <div class="hero-road">
+                    <div class="hero-road-line"></div>
+                    <div class="hero-road-slot">
+                        <img src="assets/images/car.png" class="hero-car-img" alt="top-down car">
+                    </div>
+                </div>
+                <!-- form -->
+                <div class="hero-form">
+                    <h2 class="form-title">Check Your IDP
+                        Eligibility</h2>
+                    <p class="form-subtitle">Instant eligibility
+                        check — no signup required.</p>
+                    <label for="license-country" class="form-label mt-30">Where
+                        was your license issued?</label>
+                    <div class="form-select country-select" id="heroLicenseCountrySelect" data-country-select
+                        data-exclude-pair="heroDestinationCountrySelect">
+                        <span class="form-select-icon" aria-hidden="true">🌐</span>
+                        <button type="button" id="license-country" class="form-select-input country-select-trigger"
+                            aria-haspopup="listbox" aria-expanded="false">
+                            <span class="country-select-value" data-placeholder="Select your country">Select your
+                                country</span>
+                        </button>
+                        <button type="button" class="country-clear" aria-label="Clear selection" hidden>×</button>
+                        <div class="country-dropdown" role="listbox">
+                            <div class="country-search-wrap">
+                                <span class="country-search-icon" aria-hidden="true">🔍</span>
+                                <input type="text" class="country-search-input" placeholder="Search countries…"
+                                    autocomplete="off">
+                            </div>
+                            <div class="country-options"></div>
+                        </div>
+                    </div>
+                    <form action="" method="get" class="country-form" id="heroCountryForm">
+                        <label for="destination-country" class="form-label mt-22">Where
+                            are you going?</label>
+                        <div class="form-select country-select" id="heroDestinationCountrySelect" data-country-select
+                            data-exclude-pair="heroLicenseCountrySelect">
+                            <span class="form-select-icon" aria-hidden="true">🌐</span>
+                            <button type="button" id="destination-country"
+                                class="form-select-input country-select-trigger" aria-haspopup="listbox"
+                                aria-expanded="false">
+                                <span class="country-select-value" data-placeholder="Select destination">Select
+                                    destination</span>
+                            </button>
+                            <button type="button" class="country-clear" aria-label="Clear selection" hidden>×</button>
+                            <div class="country-dropdown" role="listbox">
+                                <div class="country-search-wrap">
+                                    <span class="country-search-icon" aria-hidden="true">🔍</span>
+                                    <input type="text" class="country-search-input" placeholder="Search countries…"
+                                        autocomplete="off">
+                                </div>
+                                <div class="country-options"></div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-block mt-28">Start
+                            My Application <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" aria-hidden="true">
+                                <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></button>
+                    </form>
+                    <p class="form-note mt-26">Valid in <strong class="text-primary">190+ countries</strong> — for
+                        rentals, border crossings, and travel
+                        stays. Apply for your IDP online and receive verified digital and printed permits instantly
+                        after verification.</p>
+                </div>
+            </div>
+
+            <!-- badges -->
+            <div class="badges-grid">
+                <div class="badge-card">
+                    <img src="assets/images/icons/150+ Countries Covered.svg" alt="">
+                    <span class="badge-label">150+ Countries Covered</span>
+                </div>
+                <div class="badge-card">
+                    <img src="assets/images/icons/Professional PDF Guides.svg" alt="">
+                    <span class="badge-label">Professional PDF Guides</span>
+                </div>
+                <div class="badge-card">
+                    <img src="assets/images/icons/International Driving Resources.svg" alt="">
+                    <span class="badge-label">International Driving Resources</span>
+                </div>
+                <div class="badge-card">
+                    <img src="assets/images/icons/Instant Download.svg" alt="">
+                    <span class="badge-label">Instant Download</span>
+                </div>
+                <div class="badge-card">
+                    <img src="assets/images/icons/Secure Checkout.svg" alt="">
+                    <span class="badge-label">Secure Checkout</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- POPULAR PRODUCTS (stays wide / full width) -->
+    <section class="products-section">
+        <div class="container-wide">
+            <h2 class="h2-md text-center">Popular Driving<br>Guides & Resources</h2>
+            <div class="products-row">
+                <button type="button" class="arrow-btn" data-dir="-1" aria-label="Previous products"><svg width="20"
+                        height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M20 12H4m0 0 6-6m-6 6 6 6" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></button>
+                <div class="products-viewport">
+                    <div class="products-track">
+                        <div class="product-card">
+                            <div class="flex-1">
+                                <h3 class="card-title">USA Driving Kit</h3>
+                                <div class="card-stars">★★★★★</div>
+                                <div class="card-price">$12</div>
+                                <p class="card-desc">Master French roundabouts and
+                                    speed laws instantly.</p>
+                            </div>
+                            <div class="card-thumb">
+                                <div class="img-placeholder ph-book" role="img" aria-label="book cover"><span>book
+                                        cover</span></div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="flex-1">
+                                <h3 class="card-title">Border Crossing
+                                    Preparation Guide</h3>
+                                <div class="card-stars">★★★★★</div>
+                                <div class="card-price">$12</div>
+                                <p class="card-desc">A Practical Guide for
+                                    International Drivers &amp; Road Travelers</p>
+                            </div>
+                            <div class="card-thumb">
+                                <div class="img-placeholder ph-book" role="img" aria-label="book cover"><span>book
+                                        cover</span></div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="flex-1">
+                                <h3 class="card-title">Tourist Driving
+                                    Restrictions Guide</h3>
+                                <div class="card-stars">★★★★★</div>
+                                <div class="card-price">$12</div>
+                                <p class="card-desc">A Practical Guide to Tourist
+                                    Driving Restrictions Around the World</p>
+                            </div>
+                            <div class="card-thumb">
+                                <div class="img-placeholder ph-book" role="img" aria-label="book cover"><span>book
+                                        cover</span></div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="flex-1">
+                                <h3 class="card-title">International Road Signs
+                                    Guide</h3>
+                                <div class="card-stars">★★★★★</div>
+                                <div class="card-price">$12</div>
+                                <p class="card-desc">Understand Road Signs
+                                    Anywhere You Drive</p>
+                            </div>
+                            <div class="card-thumb">
+                                <div class="img-placeholder ph-book" role="img" aria-label="book cover"><span>book
+                                        cover</span></div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="flex-1">
+                                <h3 class="card-title">International Road Signs
+                                    Guide</h3>
+                                <div class="card-stars">★★★★★</div>
+                                <div class="card-price">$12</div>
+                                <p class="card-desc">Understand Road Signs
+                                    Anywhere You Drive</p>
+                            </div>
+                            <div class="card-thumb">
+                                <div class="img-placeholder ph-book" role="img" aria-label="book cover"><span>book
+                                        cover</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="arrow-btn" data-dir="1" aria-label="Next products"><svg width="20"
+                        height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></button>
+            </div>
+            <div class="products-dots"></div>
+            <div class="center-cta">
+                <a href="#" class="btn">All
+                    Products <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        aria-hidden="true">
+                        <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- GET READY 4 STEPS -->
+    <section class="steps-section">
+        <div class="container steps-layout">
+            <div class="steps-copy">
+                <h2 class="h2-lg">Get Ready For<br>The Road In 4 Simple<br>Steps</h2>
+                <p class="lead steps-lead mt-30">
+                    Everything you need to drive abroad: expert guides, road signs, travel checklists, and
+                    multilingual driver's licence translations.</p>
+                <a href="#" class="btn mt-44">Browse
+                    Driving Guides</a>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <span class="step-badge">Step 1</span>
+                    <div class="step-icon">
+                        <img src="assets/images/Choose Country.png" alt="Choose Country">
+                    </div>
+                    <h3 class="step-title">Choose Country</h3>
+                    <p class="step-desc">Select your
+                        destination guide or translation resource.</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-badge">Step 2</span>
+                    <div class="step-icon">
+                        <img src="assets/images/Purchase.png" alt="Purchase">
+                    </div>
+                    <h3 class="step-title">Purchase</h3>
+                    <p class="step-desc">Complete safe and
+                        secure checkout in seconds.</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-badge">Step 3</span>
+                    <div class="step-icon">
+                        <img src="assets/images/Download.png" alt="Download">
+                    </div>
+                    <h3 class="step-title">Download</h3>
+                    <p class="step-desc">Get instant access
+                        to your high-quality PDF files.</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-badge">Step 4</span>
+                    <div class="step-icon">
+                        <img src="assets/images/Drive Safely.png" alt="Drive Safely">
+                    </div>
+                    <h3 class="step-title">Drive Safely</h3>
+                    <p class="step-desc">Travel with
+                        confidence and complete peace of mind.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APPLY FOR IDP -->
+    <section class="pricing-section">
+        <div class="container">
+            <h2 class="h2-md text-center">Apply For
+                Your<br>International Driving Permit</h2>
+            <div class="pricing-tabs">
+                <button type="button" class="plan-tab active" data-plan="0">
+                    <div class="plan-price">1-Year Valid</div>
+                    <div class="plan-sub">Expires 2027</div>
+                </button>
+                <button type="button" class="plan-tab" data-plan="1">
+                    <div class="plan-price">2-Year Valid</div>
+                    <div class="plan-sub">Expires 2028</div>
+                </button>
+                <button type="button" class="plan-tab" data-plan="2">
+                    <div class="plan-price">3-Year Valid</div>
+                    <div class="plan-sub">Expires 2029</div>
+                </button>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card featured" data-price-0="$59" data-price-1="$89" data-price-2="$109"
+                    data-package="printed">
+                    <div class="flex-1">
+                        <h3 class="pricing-title">Printed
+                            Booklet + Digital IDP
+                        </h3>
+                        <div class="pricing-price mt-18">$59</div>
+                        <p class="pricing-desc mt-20">Perfect for
+                            last-minute travellers. Get a high-resolution digital copy with QR verification straight
+                            to your email</p>
+                        <a href="application.html" class="btn mt-26 js-start-application">Start
+                            Application <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                aria-hidden="true">
+                                <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></a>
+                    </div>
+                    <div class="card-thumb">
+                        <div class="img-placeholder ph-idp" role="img" aria-label="IDP booklet"><span>IDP booklet</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pricing-card" data-price-0="$39" data-price-1="$59" data-price-2="$75"
+                    data-package="digital">
+                    <div class="flex-1">
+                        <h3 class="pricing-title">Digital IDP
+                            Only</h3>
+                        <div class="pricing-price mt-18">$39</div>
+                        <p class="pricing-desc mt-20">Perfect for
+                            last-minute travellers. Get a high-resolution digital copy with QR verification straight
+                            to your email</p>
+                        <a href="application.html" class="btn mt-26 js-start-application">Start
+                            Application <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                aria-hidden="true">
+                                <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></a>
+                    </div>
+                    <div class="card-thumb">
+                        <div class="img-placeholder ph-idp" role="img" aria-label="IDP phone"><span>IDP phone</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY SMART TRAVELERS -->
+    <section class="why-section">
+        <div class="container">
+            <h2 class="h2-md text-center">Why Smart
+                Travelers<br>Choose Our Resources</h2>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon">
+                        <img src="assets/images/Accurate.png" alt="Accurate">
+                    </div>
+                    <h3 class="why-title">Accurate</h3>
+                    <p class="why-desc">Prepared using
+                        internationally recognized and verified driving information.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">
+                        <img src="assets/images/Professional.png" alt="Professional">
+                    </div>
+                    <h3 class="why-title">Professional</h3>
+                    <p class="why-desc">High-quality,
+                        beautifully formatted, and easily printable PDF documents.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">
+                        <img src="assets/images/Instant Access.png" alt="Instant Access">
+                    </div>
+                    <h3 class="why-title">Instant Access</h3>
+                    <p class="why-desc">No waiting time.
+                        Download your resources immediately after a secure purchase.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">
+                        <img src="assets/images/Regular Updates.png" alt="Regular Updates">
+                    </div>
+                    <h3 class="why-title">Regular Updates</h3>
+                    <p class="why-desc">Our content is
+                        continuously reviewed and updated when regulations change.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPLORE BY DESTINATION -->
+    <section class="destination-section">
+        <div class="destination-photo">
+            <img src="assets/images/Explore-Guides.jpg" class="ph-driver" role="img" aria-label="driver photo">
+        </div>
+        <div class="destination-content">
+            <h2 class="h2-md text-white text-center">Explore Guides by<br>Destination</h2>
+            <div class="flags-grid">
+                <div class="flag-row">
+                    <span class="flag-item">🇺🇸 USA</span><span class="flag-arrow">→</span><span class="flag-item">🇨🇦
+                        Canada</span>
+                </div>
+                <div class="flag-row">
+                    <span class="flag-item">🇬🇧 UK</span><span class="flag-arrow">→</span><span class="flag-item">🇬🇷
+                        Greece</span>
+                </div>
+                <div class="flag-row">
+                    <span class="flag-item">🇦🇫 Afghanistan</span><span class="flag-arrow">→</span><span
+                        class="flag-item">🇩🇪 Germany</span>
+                </div>
+                <div class="flag-row">
+                    <span class="flag-item">🇮🇪 Ireland</span><span class="flag-arrow">→</span><span
+                        class="flag-item">🇦🇺 Australia</span>
+                </div>
+                <div class="flag-row">
+                    <span class="flag-item">🇩🇰 Denmark</span><span class="flag-arrow">→</span><span
+                        class="flag-item">🇦🇩 Andorra</span>
+                </div>
+                <div class="flag-row">
+                    <span class="flag-item">🇲🇽 Mexico</span><span class="flag-arrow">→</span><span
+                        class="flag-item">🇮🇳 India</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="reviews-section">
+        <div class="container">
+            <h2 class="h2-md text-center">Trusted by 179,000+ Drivers</h2>
+            <div class="rating-row">
+                <span class="rating-number">4.9</span>
+                <span class="rating-stars">★★★★★</span>
+                <span class="rating-count">Over 314 Reviews</span>
+            </div>
+            <div class="reviews-scroll-grid" id="reviewsGrid"></div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="h2-faq text-center">Frequently Asked Questions (FAQ)</h2>
+            <p class="faq-subtitle">Find answers to common
+                questions about Driving License Translations.</p>
+            <div class="faq-list">
+                <div class="faq-item open">
+                    <button class="faq-toggle">
+                        <span class="faq-question">Can I use these guides
+                            offline?</span>
+                        <span class="chev">⌄</span>
+                    </button>
+                    <p class="faq-answer">
+                        Yes! Once downloaded, you can save the PDFs directly to your smartphone, tablet, or laptop
+                        and access them anytime without an internet connection.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-toggle">
+                        <span class="faq-question">Are the PDFs printable?</span>
+                        <span class="chev">⌄</span>
+                    </button>
+                    <p class="faq-answer">
+                        Absolutely. Every guide is formatted as a high-quality, print-ready PDF so you can keep a
+                        physical copy with you on the road.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-toggle">
+                        <span class="faq-question">Do you update your
+                            guides?</span>
+                        <span class="chev">⌄</span>
+                    </button>
+                    <p class="faq-answer">Yes.
+                        Our content is continuously reviewed and updated whenever driving regulations change so you
+                        always have accurate information.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-toggle">
+                        <span class="faq-question">How do downloads work?</span>
+                        <span class="chev">⌄</span>
+                    </button>
+                    <p class="faq-answer">After
+                        a secure checkout, you receive an instant download link by email and can access your files
+                        immediately from your account.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-toggle">
+                        <span class="faq-question">Is the permit translation an
+                            official government-issued IDP?</span>
+                        <span class="chev">⌄</span>
+                    </button>
+                    <p class="faq-answer">Our
+                        translations follow internationally recognized standards and are issued alongside verified
+                        digital and printed permits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="h2-lg text-center">Ready for Your Next<br>International
+                Journey?</h2>
+            <p class="lead cta-lead mt-26">Equip yourself with the best driving
+                resources and hit the road with confidence.</p>
+            <div class="cta-road">
+                <div class="cta-road-line"></div>
+                <div class="cta-road-car">
+                    <img src="assets/images/car left to right.png" alt="car" class="cta-car-img">
+                </div>
+            </div>
+            <a href="#" class="btn mt-48">Get
+                Your Travel Guides &amp; Resources <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" aria-hidden="true">
+                    <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg></a>
+        </div>
+    </section>
+
+    <!-- FOOTER (injected from footer.html) -->
+    <div id="site-footer"></div>
+    <script>includeHTML('site-footer', 'footer.html');</script>
+
+    <script src="assets/js/app.js"></script>
+</body>
+
+</html>

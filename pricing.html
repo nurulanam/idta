@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pricing — iDTA</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/include.js"></script>
+</head>
+
+<body>
+
+    <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
+    <div id="site-header"></div>
+    <script>includeHTML('site-header', 'header.html');</script>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="h2-lg">Pricing</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="breadcrumb-sep">/</span>
+                <span class="breadcrumb-current">Pricing</span>
+            </div>
+            <p class="lead page-header-lead">Simple, transparent pricing for your International Driving Permit —
+                choose the validity and format that fits your trip.</p>
+        </div>
+    </section>
+
+    <!-- APPLY FOR IDP -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-tabs">
+                <button type="button" class="plan-tab active" data-plan="0">
+                    <div class="plan-price">1-Year Valid</div>
+                    <div class="plan-sub">Expires 2027</div>
+                </button>
+                <button type="button" class="plan-tab" data-plan="1">
+                    <div class="plan-price">2-Year Valid</div>
+                    <div class="plan-sub">Expires 2028</div>
+                </button>
+                <button type="button" class="plan-tab" data-plan="2">
+                    <div class="plan-price">3-Year Valid</div>
+                    <div class="plan-sub">Expires 2029</div>
+                </button>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card featured" data-price-0="$59" data-price-1="$89" data-price-2="$109"
+                    data-package="printed">
+                    <div class="flex-1">
+                        <h3 class="pricing-title">Printed
+                            Booklet + Digital IDP
+                        </h3>
+                        <div class="pricing-price mt-18">$59</div>
+                        <p class="pricing-desc mt-20">Perfect for last-minute travellers. Get a high-resolution
+                            digital copy plus a printed booklet shipped to your address.</p>
+                        <a href="application.html" class="btn mt-26 js-start-application">Start
+                            Application <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                aria-hidden="true">
+                                <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></a>
+                    </div>
+                    <div class="card-thumb">
+                        <div class="img-placeholder ph-idp" role="img" aria-label="IDP booklet"><span>IDP booklet</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pricing-card" data-price-0="$39" data-price-1="$59" data-price-2="$75"
+                    data-package="digital">
+                    <div class="flex-1">
+                        <h3 class="pricing-title">Digital IDP
+                            Only</h3>
+                        <div class="pricing-price mt-18">$39</div>
+                        <p class="pricing-desc mt-20">Perfect for last-minute travellers. Get a high-resolution
+                            digital copy with QR verification straight to your email.</p>
+                        <a href="application.html" class="btn mt-26 js-start-application">Start
+                            Application <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                aria-hidden="true">
+                                <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></a>
+                    </div>
+                    <div class="card-thumb">
+                        <div class="img-placeholder ph-idp" role="img" aria-label="IDP phone"><span>IDP phone</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pricing-note-grid">
+                <div class="why-card">
+                    <div class="why-icon">
+                        <img src="assets/images/Accurate.png" alt="Accurate">
+                    </div>
+                    <h3 class="why-title">No Hidden Fees</h3>
+                    <p class="why-desc">The price you see is the price you pay — shipping for printed booklets is
+                        calculated at checkout with no surprise charges.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">
+                        <img src="assets/images/Instant Access.png" alt="Instant Access">
+                    </div>
+                    <h3 class="why-title">Instant Digital Delivery</h3>
+                    <p class="why-desc">Your digital IDP is emailed within minutes of verification, so you're
+                        never stuck waiting before a trip.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon">
+                        <img src="assets/images/Regular Updates.png" alt="Refunds">
+                    </div>
+                    <h3 class="why-title">Money-Back Guarantee</h3>
+                    <p class="why-desc">If your application can't be verified, you're covered by our <a
+                            href="refund-policy.html">Refund Policy</a>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER (injected from footer.html) -->
+    <div id="site-footer"></div>
+    <script>includeHTML('site-footer', 'footer.html');</script>
+
+    <script src="assets/js/app.js"></script>
+</body>
+
+</html>
