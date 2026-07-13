@@ -1,0 +1,11 @@
+name = "idta-upload"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+
+[[r2_buckets]]
+binding = "IDTA_BUCKET"
+bucket_name = "idta-html"
+
+# Lock this down to your real site origin(s) once you know them, e.g.:
+# [vars]
+# ALLOWED_ORIGIN = "https://your-domain.com"

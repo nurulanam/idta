@@ -20,10 +20,12 @@
     }
 
     function thumb(label, meta) {
-        if (!meta || !meta.thumbnail) return '';
-        var sizeKB = Math.round(meta.size / 1024);
-        return '<div class="review-thumb"><img src="' + meta.thumbnail + '" alt="' + escapeHTML(label) + '">' +
-            '<span>' + escapeHTML(label) + '<br>' + escapeHTML(meta.name) + ' (' + sizeKB + ' KB)</span></div>';
+        var src = meta && (meta.url || meta.thumbnail);
+        if (!src) return '';
+        var sizeKB = meta.size ? Math.round(meta.size / 1024) + ' KB' : '';
+        var name = meta.name || '';
+        return '<div class="review-thumb"><img src="' + src + '" alt="' + escapeHTML(label) + '">' +
+            '<span>' + escapeHTML(label) + (name ? '<br>' + escapeHTML(name) + (sizeKB ? ' (' + sizeKB + ')' : '') : '') + '</span></div>';
     }
 
     function render(data) {
@@ -65,7 +67,7 @@
             thumb('License Back', data.verification.licenseBack)
         ];
         if (data.verification.signature && data.verification.signature.present) {
-            thumbs.push(thumb('Signature', { thumbnail: data.verification.signature.thumbnail, name: 'signature.png', size: 0 }));
+            thumbs.push(thumb('Signature', { url: data.verification.signature.url, thumbnail: data.verification.signature.thumbnail }));
         }
         html += '<div class="application-card review-card"><h2 class="form-title">Uploaded Documents</h2>' +
             '<div class="review-thumbs mt-22">' + thumbs.join('') + '</div></div>';

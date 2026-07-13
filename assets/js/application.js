@@ -500,6 +500,82 @@
         };
     }
 
+    function makeSubmissionId() {
+        if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+        return 'sub-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+    }
+
+    function canvasToBlob(canvas, cb) {
+        if (canvas.toBlob) { canvas.toBlob(cb, 'image/png'); return; }
+        cb(null); // very old browsers without toBlob support simply skip the signature upload
+    }
+
+    // uploads the verification documents + signature to R2 (via the "idta-upload"
+    // Worker) so show.html can display them straight from the bucket instead of
+    // carrying base64 thumbnails around in sessionStorage
+    function uploadToR2(payload, files, cb) {
+        var workerUrl = window.ENV.R2_WORKER_URL.replace(/\/$/, '');
+        var submissionId = makeSubmissionId();
+
+        canvasToBlob(files.sigCanvas, function (sigBlob) {
+            var form = new FormData();
+            form.append('submissionId', submissionId);
+            if (files.portraitFile) form.append('portrait', files.portraitFile);
+            if (files.frontFile) form.append('license_front', files.frontFile);
+            if (files.backFile) form.append('license_back', files.backFile);
+            if (sigBlob) form.append('signature', sigBlob, 'signature.png');
+            form.append('data', JSON.stringify(payload));
+
+            fetch(workerUrl + '/upload', { method: 'POST', body: form })
+                .then(function (res) {
+                    if (!res.ok) throw new Error('Upload failed with status ' + res.status);
+                    return res.json();
+                })
+                .then(function (result) {
+                    payload.submissionId = result.submissionId;
+                    var f = result.files || {};
+                    if (payload.verification.portraitPhoto && f.portrait) payload.verification.portraitPhoto.url = workerUrl + f.portrait;
+                    if (payload.verification.licenseFront && f.license_front) payload.verification.licenseFront.url = workerUrl + f.license_front;
+                    if (payload.verification.licenseBack && f.license_back) payload.verification.licenseBack.url = workerUrl + f.license_back;
+                    payload.verification.signature = f.signature
+                        ? { present: true, url: workerUrl + f.signature }
+                        : { present: false };
+                    cb(payload);
+                })
+                .catch(function (err) {
+                    console.warn('uploadToR2: falling back to local previews —', err);
+                    buildLocalPreviews(payload, files, cb);
+                });
+        });
+    }
+
+    // fallback used when R2_WORKER_URL isn't configured, or the upload fails
+    function buildLocalPreviews(payload, files, cb) {
+        var pending = 3;
+        function taskDone() {
+            pending--;
+            if (pending === 0) {
+                payload.verification.signature = hasSignature(files.sigCanvas)
+                    ? { present: true, thumbnail: files.sigCanvas.toDataURL('image/png') }
+                    : { present: false };
+                cb(payload);
+            }
+        }
+
+        fileToDataURL(files.portraitFile, 240, function (url) {
+            if (payload.verification.portraitPhoto) payload.verification.portraitPhoto.thumbnail = url;
+            taskDone();
+        });
+        fileToDataURL(files.frontFile, 240, function (url) {
+            if (payload.verification.licenseFront) payload.verification.licenseFront.thumbnail = url;
+            taskDone();
+        });
+        fileToDataURL(files.backFile, 240, function (url) {
+            if (payload.verification.licenseBack) payload.verification.licenseBack.thumbnail = url;
+            taskDone();
+        });
+    }
+
     function buildSubmissionPayload(cb) {
         var portraitInput = document.querySelector('input[name="portrait_photo"]');
         var frontInput = document.querySelector('input[name="license_front"]');
@@ -575,29 +651,13 @@
             }
         };
 
-        var pending = 3;
-        function taskDone() {
-            pending--;
-            if (pending === 0) {
-                payload.verification.signature = hasSignature(sigCanvas)
-                    ? { present: true, thumbnail: sigCanvas.toDataURL('image/png') }
-                    : { present: false };
-                cb(payload);
-            }
-        }
+        var files = { portraitFile: portraitFile, frontFile: frontFile, backFile: backFile, sigCanvas: sigCanvas };
 
-        fileToDataURL(portraitFile, 240, function (url) {
-            if (payload.verification.portraitPhoto) payload.verification.portraitPhoto.thumbnail = url;
-            taskDone();
-        });
-        fileToDataURL(frontFile, 240, function (url) {
-            if (payload.verification.licenseFront) payload.verification.licenseFront.thumbnail = url;
-            taskDone();
-        });
-        fileToDataURL(backFile, 240, function (url) {
-            if (payload.verification.licenseBack) payload.verification.licenseBack.thumbnail = url;
-            taskDone();
-        });
+        if (window.ENV && window.ENV.R2_WORKER_URL) {
+            uploadToR2(payload, files, cb);
+        } else {
+            buildLocalPreviews(payload, files, cb);
+        }
     }
 
     // ---------- submit ----------
