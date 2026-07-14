@@ -10,51 +10,14 @@
     var TEST_MODE = !!(window.ENV && window.ENV.TEST_MODE);
 
     var testModeBanner = document.getElementById('testModeBanner');
-    var cardTestHint = document.getElementById('cardTestHint');
-    if (TEST_MODE) {
-        if (testModeBanner) testModeBanner.hidden = false;
-        if (cardTestHint) cardTestHint.hidden = false;
-    }
+    if (TEST_MODE && testModeBanner) testModeBanner.hidden = false;
 
-    // ---------- payment card validators ----------
-    function luhnCheck(digits) {
-        var sum = 0, alt = false;
-        for (var i = digits.length - 1; i >= 0; i--) {
-            var n = parseInt(digits.charAt(i), 10);
-            if (alt) { n *= 2; if (n > 9) n -= 9; }
-            sum += n;
-            alt = !alt;
-        }
-        return sum % 10 === 0;
-    }
-
-    function isValidCardNumber(value) {
-        var digits = value.replace(/\D/g, '');
-        if (digits.length < 13 || digits.length > 19) return false;
-        // test mode accepts any well-formed demo number without requiring a real Luhn checksum
-        return TEST_MODE || luhnCheck(digits);
-    }
-
-    function isValidCardExpiry(value) {
-        var m = value.match(/^(\d{2})\s*\/\s*(\d{2})$/);
-        if (!m) return false;
-        var month = parseInt(m[1], 10);
-        var year = parseInt(m[2], 10) + 2000;
-        if (month < 1 || month > 12) return false;
-        var now = new Date();
-        var currentYear = now.getFullYear();
-        var currentMonth = now.getMonth() + 1;
-        return year > currentYear || (year === currentYear && month >= currentMonth);
-    }
-
-    function isValidCardCVC(value) {
-        return /^\d{3,4}$/.test(value.trim());
-    }
-
-    var CARD_VALIDATORS = {
-        'card-number': { test: isValidCardNumber, message: 'Please enter a valid card number.' },
-        'card-expiry': { test: isValidCardExpiry, message: 'Please enter a valid, non-expired date (MM/YY).' },
-        'card-cvc': { test: isValidCardCVC, message: 'Please enter a valid CVC.' }
+    // WooCommerce product IDs behind each validity-year tab / package combo —
+    // kept in sync with assets/js/pricing-live.js's PRODUCT_IDS
+    var PLAN_PRODUCT_IDS = {
+        0: { printed: 15, digital: 14 },
+        1: { printed: 17, digital: 16 },
+        2: { printed: 19, digital: 18 }
     };
 
     // ---------- phone number validation (per selected country) ----------
@@ -86,34 +49,6 @@
         var digits = value.replace(/\D/g, '');
         var rule = (iso2 && PHONE_RULES[iso2]) || PHONE_RULE_DEFAULT;
         return digits.length >= rule.min && digits.length <= rule.max;
-    }
-
-    // auto-format card fields as the user types
-    var cardNumberInput = document.getElementById('card-number');
-    if (cardNumberInput) {
-        cardNumberInput.setAttribute('maxlength', '23');
-        cardNumberInput.addEventListener('input', function () {
-            var digits = cardNumberInput.value.replace(/\D/g, '').slice(0, 19);
-            cardNumberInput.value = digits.replace(/(.{4})/g, '$1 ').trim();
-        });
-    }
-
-    var cardExpiryInput = document.getElementById('card-expiry');
-    if (cardExpiryInput) {
-        cardExpiryInput.setAttribute('maxlength', '5');
-        cardExpiryInput.addEventListener('input', function () {
-            var digits = cardExpiryInput.value.replace(/\D/g, '').slice(0, 4);
-            if (digits.length > 2) digits = digits.slice(0, 2) + '/' + digits.slice(2);
-            cardExpiryInput.value = digits;
-        });
-    }
-
-    var cardCvcInput = document.getElementById('card-cvc');
-    if (cardCvcInput) {
-        cardCvcInput.setAttribute('maxlength', '4');
-        cardCvcInput.addEventListener('input', function () {
-            cardCvcInput.value = cardCvcInput.value.replace(/\D/g, '').slice(0, 4);
-        });
     }
 
     function goToStep(n, skipScroll) {
@@ -184,15 +119,12 @@
         panel.querySelectorAll('input[required]:not([type=file]):not([type=checkbox]), textarea[required]').forEach(function (input) {
             if (input.offsetParent === null) return;
             var anchor = input.closest('.phone-field') || input;
-            var cardRule = CARD_VALIDATORS[input.id];
             if (!input.checkValidity()) {
                 var msg = 'This field is required.';
                 if (input.validity.typeMismatch) msg = 'Please enter a valid email address.';
                 fail(input, anchor, msg);
             } else if (input.type === 'tel' && !isValidPhoneNumber(input.value, selectedPhoneISO())) {
                 fail(input, anchor, 'Please enter a valid phone number for the selected country.');
-            } else if (cardRule && !cardRule.test(input.value)) {
-                fail(input, anchor, cardRule.message);
             } else {
                 pass(input, anchor);
             }
@@ -246,12 +178,10 @@
 
     document.querySelectorAll('input[required]:not([type=file]):not([type=checkbox]), textarea[required]').forEach(function (input) {
         var anchor = input.closest('.phone-field') || input;
-        var cardRule = CARD_VALIDATORS[input.id];
         input.addEventListener('input', function () {
             var telInvalid = input.type === 'tel' && !isValidPhoneNumber(input.value, selectedPhoneISO());
-            var cardInvalid = cardRule && !cardRule.test(input.value);
             if (input.type === 'tel') updatePhoneCheckmark(input);
-            if (input.checkValidity() && !telInvalid && !cardInvalid) {
+            if (input.checkValidity() && !telInvalid) {
                 clearFieldError(anchor);
                 input.classList.remove('invalid');
             }
@@ -361,10 +291,16 @@
     // ---------- plan / package select cards ----------
     var planCards = document.querySelectorAll('.plan-select-card');
 
+    function selectedPackage() {
+        var selected = document.querySelector('.plan-select-card.selected input');
+        return selected ? selected.value : null;
+    }
+
     function updateSummary() {
         var selected = document.querySelector('.plan-select-card.selected');
         var summaryPackage = document.getElementById('summaryPackage');
         var summaryTotal = document.getElementById('summaryTotal');
+
         if (selected && summaryPackage && summaryTotal) {
             summaryPackage.textContent = selected.dataset.title;
             if (window.Cart) {
@@ -580,13 +516,6 @@
         };
     }
 
-    function makeSubmissionId() {
-        var randomId = (window.crypto && crypto.randomUUID)
-            ? crypto.randomUUID().split('-')[0]
-            : Math.random().toString(16).slice(2, 10);
-        return 'sub_' + Date.now() + '_' + randomId;
-    }
-
     function canvasToBlob(canvas, cb) {
         if (canvas.toBlob) { canvas.toBlob(cb, 'image/png'); return; }
         cb(null); // very old browsers without toBlob support simply skip the signature upload
@@ -597,11 +526,9 @@
     // carrying base64 thumbnails around in sessionStorage
     function uploadToR2(payload, files, cb) {
         var workerUrl = window.ENV.R2_WORKER_URL.replace(/\/$/, '');
-        var submissionId = makeSubmissionId();
 
         canvasToBlob(files.sigCanvas, function (sigBlob) {
             var form = new FormData();
-            form.append('submissionId', submissionId);
             if (files.portraitFile) form.append('portrait', files.portraitFile);
             if (files.frontFile) form.append('license_front', files.frontFile);
             if (files.backFile) form.append('license_back', files.backFile);
@@ -622,6 +549,10 @@
                     payload.verification.signature = f.signature
                         ? { present: true, url: workerUrl + f.signature }
                         : { present: false };
+                    if (f.portrait) payload.meta.passport_photo = workerUrl + f.portrait;
+                    if (f.license_front) payload.meta.license_front = workerUrl + f.license_front;
+                    if (f.license_back) payload.meta.license_back = workerUrl + f.license_back;
+                    if (f.signature) payload.meta.signature = workerUrl + f.signature;
                     cb(payload);
                 })
                 .catch(function (err) {
@@ -676,10 +607,15 @@
         var selectedPlan = document.querySelector('.plan-select-card.selected');
         var activeTab = document.querySelector('.plan-tab.active');
         var activeTabPrice = activeTab ? activeTab.querySelector('.plan-price') : null;
+        var activeTabIndex = activeTab ? Number(activeTab.dataset.plan) : 0;
+        var packageValue = selectedPackage();
+        var isPrinted = packageValue === 'printed';
 
         var portraitFile = portraitInput && portraitInput.files[0];
         var frontFile = frontInput && frontInput.files[0];
         var backFile = backInput && backInput.files[0];
+
+        var planProductIds = PLAN_PRODUCT_IDS[activeTabIndex] || PLAN_PRODUCT_IDS[0];
 
         var payload = {
             submittedAt: new Date().toISOString(),
@@ -688,6 +624,7 @@
                 email: val('app-email'),
                 phone: { dialCode: '+' + val('app-phone-dial-code'), number: val('app-phone') },
                 firstName: val('app-first-name'),
+                middleName: val('app-middle-name'),
                 lastName: val('app-last-name'),
                 countryOfBirth: countryInfo('appBirthCountry'),
                 residence: countryInfo('appResidenceCountry'),
@@ -698,7 +635,10 @@
             plan: {
                 package: selectedPlan ? selectedPlan.dataset.title : null,
                 price: selectedPlan ? selectedPlan.dataset.price : null,
-                validity: activeTabPrice ? activeTabPrice.textContent.trim() : null
+                validity: activeTabPrice ? activeTabPrice.textContent.trim() : null,
+                validityYears: activeTabIndex + 1,
+                format: isPrinted ? 'print_digital' : 'digital_only',
+                productId: isPrinted ? planProductIds.printed : planProductIds.digital
             },
             route: {
                 licenseIssuedCountry: countryInfo('appLicenseCountry'),
@@ -715,15 +655,29 @@
                 name: val('billing-name'),
                 email: val('billing-email'),
                 address: val('billing-address'),
+                address2: val('billing-address-2'),
                 city: val('billing-city'),
                 state: val('billing-state'),
                 zip: val('billing-zip'),
                 country: countryInfo('appBillingCountry')
             },
-            payment: {
-                cardName: val('card-name'),
-                cardLast4: (val('card-number') || '').replace(/\D/g, '').slice(-4),
-                expiry: val('card-expiry')
+            meta: {
+                first_name: val('app-first-name'),
+                middle_name: val('app-middle-name'),
+                last_name: val('app-last-name'),
+                date_of_birth: val('app-dob'),
+                gender: val('genderValue'),
+                country_of_birth: countryInfo('appBirthCountry').name,
+                country_of_residence: countryInfo('appResidenceCountry').name,
+                driver_license_number: val('app-license-no'),
+                country_of_issuance: countryInfo('appLicenseCountry').name,
+                license_category: licenseClasses.map(function (c) { return c.value; }).join(', '),
+                validity_years: activeTabIndex + 1,
+                format: isPrinted ? 'print_digital' : 'digital_only',
+                passport_photo: null,
+                license_front: null,
+                license_back: null,
+                signature: null
             },
             summary: {
                 package: (document.getElementById('summaryPackage') || {}).textContent || null,
@@ -743,6 +697,55 @@
         }
     }
 
+    // builds the /create-order request body from the submission payload and
+    // posts it to the Worker, which creates a real (pending, unpaid) WooCommerce
+    // order and hands back the order-pay URL where the customer actually pays
+    function createOrderAndRedirect(payload, submitBtn) {
+        var workerUrl = window.ENV.R2_WORKER_URL.replace(/\/$/, '');
+        var billingName = (payload.billing.name || '').trim();
+        var spaceIdx = billingName.indexOf(' ');
+        var billingFirstName = spaceIdx === -1 ? billingName : billingName.slice(0, spaceIdx);
+        var billingLastName = spaceIdx === -1 ? '' : billingName.slice(spaceIdx + 1);
+
+        var orderRequest = {
+            billing: {
+                firstName: billingFirstName,
+                lastName: billingLastName,
+                email: payload.billing.email,
+                phone: payload.applicant.phone.dialCode + payload.applicant.phone.number,
+                address1: payload.billing.address,
+                address2: payload.billing.address2,
+                city: payload.billing.city,
+                state: payload.billing.state,
+                postcode: payload.billing.zip,
+                country: payload.billing.country.code
+            },
+            planItem: { productId: payload.plan.productId, quantity: 1 },
+            cartItems: payload.summary.cartItems,
+            meta: payload.meta
+        };
+
+        fetch(workerUrl + '/create-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderRequest)
+        })
+            .then(function (res) {
+                if (!res.ok) throw new Error('Order creation failed with status ' + res.status);
+                return res.json();
+            })
+            .then(function (result) {
+                if (!result.payUrl) throw new Error('Worker response did not include a payUrl');
+                if (window.Cart) Cart.clear();
+                window.location.href = result.payUrl;
+            })
+            .catch(function (err) {
+                console.error('application.js: failed to create order —', err);
+                alert('Sorry, we could not start checkout right now. Please try again in a moment.');
+                if (submitBtn) submitBtn.disabled = false;
+            });
+    }
+
     // ---------- submit ----------
     var form = document.getElementById('applicationForm');
     if (form) {
@@ -750,6 +753,9 @@
             e.preventDefault();
             var panel = form.querySelector('.form-step[data-step-panel="3"]');
             if (!validateStep(panel)) return;
+
+            var submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
 
             if (TEST_MODE) {
                 buildSubmissionPayload(function (payload) {
@@ -764,8 +770,15 @@
                 return;
             }
 
-            if (window.Cart) Cart.clear();
-            alert('Your application has been submitted! Our team will verify your documents and send your IDP shortly.');
+            if (!window.ENV || !window.ENV.R2_WORKER_URL) {
+                alert('Checkout is not configured yet. Please try again later.');
+                if (submitBtn) submitBtn.disabled = false;
+                return;
+            }
+
+            buildSubmissionPayload(function (payload) {
+                createOrderAndRedirect(payload, submitBtn);
+            });
         });
     }
 

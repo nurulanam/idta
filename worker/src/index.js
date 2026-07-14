@@ -1,13 +1,16 @@
 // Cloudflare Worker: accepts application uploads and stores them in the
-// "idta-html" R2 bucket, organized as {YYYY}/{MM}/{DD}/sub_{timestamp}_{randomId}/...
+// "idta-html" R2 bucket, organized as {YYYY}/{MM}/{DD}/{HHMMSS}-{ms}/...
 // Also proxies WooCommerce product reads so the storefront's consumer
 // key/secret never has to reach the browser.
 //
 // Routes:
-//   POST /upload      multipart/form-data -> stores files + data.json, returns file URLs
-//   GET  /files/*key  streams a stored object back out (used as <img src>)
-//   GET  /products    proxies WooCommerce's /wp-json/wc/v3/products, optionally
-//                      filtered by ?category=slug-or-id / ?tag=slug-or-id
+//   POST /upload            multipart/form-data -> stores files + data.json, returns file URLs
+//   GET  /files/*key        streams a stored object back out (used as <img src>)
+//   GET  /products          proxies WooCommerce's /wp-json/wc/v3/products, optionally
+//                            filtered by ?category=slug-or-id / ?tag=slug-or-id
+//   POST /create-order      creates a real WooCommerce order (billing/line items/_idp_* meta)
+//                            and returns its order-pay URL — the customer completes payment
+//                            on the main WooCommerce site, never here
 
 const FILE_FIELDS = {
     portrait: 'portrait.jpg',
@@ -34,7 +37,9 @@ function datePath() {
 }
 
 function genSubmissionId() {
-    return 'sub_' + Date.now() + '_' + crypto.randomUUID().split('-')[0];
+    var d = new Date();
+    return pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) +
+        '-' + String(d.getUTCMilliseconds()).padStart(3, '0');
 }
 
 async function handleUpload(request, env, cors) {
@@ -202,6 +207,116 @@ async function handleProducts(url, env, cors) {
     });
 }
 
+// the fields this frontend collects that don't map to a native WooCommerce order
+// column — stored as order meta so they show up in the WP admin order screen
+var IDP_META_KEYS = [
+    'first_name', 'middle_name', 'last_name', 'date_of_birth', 'gender',
+    'country_of_birth', 'country_of_residence', 'driver_license_number',
+    'country_of_issuance', 'license_category', 'validity_years', 'format',
+    'passport_photo', 'license_front', 'license_back', 'signature'
+];
+
+async function handleCreateOrder(request, env, cors) {
+    if (!env.WC_URL || !env.WC_CONSUMER_KEY || !env.WC_CONSUMER_SECRET) {
+        return new Response(JSON.stringify({ error: 'WooCommerce is not configured on this Worker.' }), {
+            status: 500,
+            headers: Object.assign({ 'Content-Type': 'application/json' }, cors)
+        });
+    }
+
+    var body;
+    try {
+        body = await request.json();
+    } catch (e) {
+        return new Response(JSON.stringify({ error: 'Invalid JSON body.' }), {
+            status: 400,
+            headers: Object.assign({ 'Content-Type': 'application/json' }, cors)
+        });
+    }
+
+    var billing = body.billing || {};
+    var meta = body.meta || {};
+    var planItem = body.planItem || null;
+    var cartItems = Array.isArray(body.cartItems) ? body.cartItems : [];
+
+    var lineItems = [];
+    var feeLines = [];
+
+    if (planItem && planItem.productId) {
+        lineItems.push({ product_id: Number(planItem.productId), quantity: planItem.quantity || 1 });
+    }
+
+    cartItems.forEach(function (item) {
+        var qty = item.qty || 1;
+        if (/^\d+$/.test(String(item.id))) {
+            lineItems.push({ product_id: Number(item.id), quantity: qty });
+        } else {
+            var price = parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0;
+            feeLines.push({ name: item.name || 'Add-on', total: (price * qty).toFixed(2) });
+        }
+    });
+
+    var metaData = [];
+    IDP_META_KEYS.forEach(function (key) {
+        var value = meta[key];
+        if (value !== undefined && value !== null && value !== '') {
+            metaData.push({ key: '_idp_' + key, value: value });
+        }
+    });
+
+    var orderPayload = {
+        status: 'pending',
+        billing: {
+            first_name: billing.firstName || '',
+            last_name: billing.lastName || '',
+            address_1: billing.address1 || '',
+            address_2: billing.address2 || '',
+            city: billing.city || '',
+            state: billing.state || '',
+            postcode: billing.postcode || '',
+            country: billing.country || '',
+            email: billing.email || '',
+            phone: billing.phone || ''
+        },
+        shipping: {
+            first_name: billing.firstName || '',
+            last_name: billing.lastName || '',
+            address_1: billing.address1 || '',
+            address_2: billing.address2 || '',
+            city: billing.city || '',
+            state: billing.state || '',
+            postcode: billing.postcode || '',
+            country: billing.country || ''
+        },
+        line_items: lineItems,
+        fee_lines: feeLines,
+        meta_data: metaData
+    };
+
+    var wcRes = await fetch(env.WC_URL.replace(/\/$/, '') + '/wp-json/wc/v3/orders', {
+        method: 'POST',
+        headers: { Authorization: wcAuthHeader(env), 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderPayload)
+    });
+
+    if (!wcRes.ok) {
+        var errText = await wcRes.text();
+        return new Response(JSON.stringify({ error: 'Failed to create order on WooCommerce.', details: errText }), {
+            status: 502,
+            headers: Object.assign({ 'Content-Type': 'application/json' }, cors)
+        });
+    }
+
+    var order = await wcRes.json();
+    var payUrl = env.WC_URL.replace(/\/$/, '') + '/checkout/order-pay/' + order.id +
+        '/?pay_for_order=true&key=' + order.order_key;
+
+    return new Response(JSON.stringify({ orderId: order.id, payUrl: payUrl }), {
+        status: 200,
+        headers: Object.assign({ 'Content-Type': 'application/json' }, cors)
+    });
+}
+
 async function handleFileFetch(url, env, cors) {
     var key = decodeURIComponent(url.pathname.replace(/^\/files\//, ''));
     var object = await env.IDTA_BUCKET.get(key);
@@ -229,6 +344,9 @@ export default {
         }
         if (request.method === 'GET' && url.pathname === '/products') {
             return handleProducts(url, env, cors);
+        }
+        if (request.method === 'POST' && url.pathname === '/create-order') {
+            return handleCreateOrder(request, env, cors);
         }
         return new Response('Not found', { status: 404, headers: cors });
     }

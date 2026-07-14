@@ -75,17 +75,12 @@
         html += section('Billing', [
             row('Name', data.billing.name),
             row('Email', data.billing.email),
-            row('Address', data.billing.address),
+            row('Address Line 1', data.billing.address),
+            row('Address Line 2', data.billing.address2),
             row('City', data.billing.city),
             row('State / Province', data.billing.state),
             row('Postal Code', data.billing.zip),
             row('Country', data.billing.country.name)
-        ]);
-
-        html += section('Payment', [
-            row('Name on Card', data.payment.cardName),
-            row('Card', '•••• •••• •••• ' + (data.payment.cardLast4 || '----')),
-            row('Expiry', data.payment.expiry)
         ]);
 
         html += section('Order Summary', [

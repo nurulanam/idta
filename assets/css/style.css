@@ -3643,16 +3643,6 @@ img {
     color: #c99a00;
 }
 
-.card-test-hint {
-    font-size: 13px;
-    color: var(--olive);
-    margin-top: 8px;
-}
-
-.card-test-hint[hidden] {
-    display: none;
-}
-
 /* ---------- submission review (show.html) ---------- */
 .review-wrap {
     max-width: 820px;

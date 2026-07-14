@@ -40,8 +40,8 @@
                     <path d="M10.3 3.6 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z"
                         stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
                 </svg>
-                <span>Test Mode is on — payments aren't processed. Use card <strong>4242 4242 4242 4242</strong>,
-                    any future expiry, any CVC. Your submission will be shown as JSON after checkout.</span>
+                <span>Test Mode is on — no order is created and no payment is processed. Your submission will be
+                    shown as JSON after checkout.</span>
             </div>
 
             <!-- STEPPER -->
@@ -123,10 +123,16 @@
                                     placeholder="John" required>
                             </div>
                             <div>
-                                <label for="app-last-name" class="form-label required">Last Name</label>
-                                <input type="text" id="app-last-name" name="last_name" class="input"
-                                    placeholder="Smith" required>
+                                <label for="app-middle-name" class="form-label">Middle Name</label>
+                                <input type="text" id="app-middle-name" name="middle_name" class="input"
+                                    placeholder="Optional">
                             </div>
+                        </div>
+
+                        <div class="mt-22">
+                            <label for="app-last-name" class="form-label required">Last Name</label>
+                            <input type="text" id="app-last-name" name="last_name" class="input"
+                                placeholder="Smith" required>
                         </div>
 
                         <div class="form-row mt-22">
@@ -542,9 +548,15 @@
                             </div>
 
                             <div class="mt-22">
-                                <label for="billing-address" class="form-label required">Address</label>
+                                <label for="billing-address" class="form-label required">Address Line 1</label>
                                 <input type="text" id="billing-address" name="billing_address" class="input"
                                     placeholder="Street address" required>
+                            </div>
+
+                            <div class="mt-22">
+                                <label for="billing-address-2" class="form-label">Address Line 2</label>
+                                <input type="text" id="billing-address-2" name="billing_address_2" class="input"
+                                    placeholder="Apartment, suite, unit, etc. (optional)">
                             </div>
 
                             <div class="form-row mt-22">
@@ -588,34 +600,8 @@
                                 </div>
                             </div>
 
-                            <h2 class="form-title mt-40">Payment Details</h2>
-
-                            <div class="mt-30">
-                                <label for="card-name" class="form-label required">Name on Card</label>
-                                <input type="text" id="card-name" name="card_name" class="input"
-                                    placeholder="John Smith" required>
-                            </div>
-
-                            <div class="mt-22">
-                                <label for="card-number" class="form-label required">Card Number</label>
-                                <input type="text" id="card-number" name="card_number" class="input"
-                                    inputmode="numeric" placeholder="1234 1234 1234 1234" required>
-                                <p class="card-test-hint" id="cardTestHint" hidden>Test mode: try 4242 4242 4242 4242
-                                    with any future expiry and any CVC.</p>
-                            </div>
-
-                            <div class="form-row mt-22">
-                                <div>
-                                    <label for="card-expiry" class="form-label required">Expiry Date</label>
-                                    <input type="text" id="card-expiry" name="card_expiry" class="input"
-                                        placeholder="MM / YY" required>
-                                </div>
-                                <div>
-                                    <label for="card-cvc" class="form-label required">CVC</label>
-                                    <input type="text" id="card-cvc" name="card_cvc" class="input" inputmode="numeric"
-                                        placeholder="123" required>
-                                </div>
-                            </div>
+                            <p class="form-note mt-30">Payment is completed securely on our checkout page — no card
+                                details are collected here.</p>
 
                             <label class="checkbox-field mt-22">
                                 <input type="checkbox" name="agree_terms" required>
@@ -652,7 +638,7 @@
                                 <span>Total</span>
                                 <span id="summaryTotal">$59</span>
                             </div>
-                            <button type="submit" class="btn btn-block mt-28">Complete Application
+                            <button type="submit" class="btn btn-block mt-28">Proceed to Payment
                                 <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
                                     aria-hidden="true">
                                     <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
