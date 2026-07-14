@@ -501,8 +501,10 @@
     }
 
     function makeSubmissionId() {
-        if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
-        return 'sub-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+        var randomId = (window.crypto && crypto.randomUUID)
+            ? crypto.randomUUID().split('-')[0]
+            : Math.random().toString(16).slice(2, 10);
+        return 'sub_' + Date.now() + '_' + randomId;
     }
 
     function canvasToBlob(canvas, cb) {

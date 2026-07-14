@@ -1,5 +1,5 @@
 // Cloudflare Worker: accepts application uploads and stores them in the
-// "idta-html" R2 bucket, organized as submissions/{yyyy-mm-dd}/{submissionId}/...
+// "idta-html" R2 bucket, organized as {YYYY}/{MM}/{DD}/sub_{timestamp}_{randomId}/...
 //
 // Routes:
 //   POST /upload      multipart/form-data -> stores files + data.json, returns file URLs
@@ -24,15 +24,19 @@ function pad(n) {
     return String(n).padStart(2, '0');
 }
 
-function todayPrefix() {
+function datePath() {
     var d = new Date();
-    return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate());
+    return d.getUTCFullYear() + '/' + pad(d.getUTCMonth() + 1) + '/' + pad(d.getUTCDate());
+}
+
+function genSubmissionId() {
+    return 'sub_' + Date.now() + '_' + crypto.randomUUID().split('-')[0];
 }
 
 async function handleUpload(request, env, cors) {
     var form = await request.formData();
-    var submissionId = (form.get('submissionId') || crypto.randomUUID()).toString();
-    var basePrefix = 'submissions/' + todayPrefix() + '/' + submissionId + '/';
+    var submissionId = (form.get('submissionId') || genSubmissionId()).toString();
+    var basePrefix = datePath() + '/' + submissionId + '/';
     var fileKeys = {};
 
     for (var field in FILE_FIELDS) {
