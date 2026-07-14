@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Premium Digital Products — iDTA</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/include.js"></script>
+</head>
+
+<body>
+
+    <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
+    <div id="site-header"></div>
+    <script>includeHTML('site-header', 'header.html');</script>
+
+    <!-- SECTION 1: PREMIUM DIGITAL PRODUCTS (loaded live from WooCommerce) -->
+    <section class="premium-products-section">
+        <div class="container">
+            <h2 class="h2-md text-center">Premium Digital Products</h2>
+            <div class="product-search-wrap">
+                <div class="product-search">
+                    <input type="search" class="product-search-input" placeholder="Search digital products…"
+                        aria-label="Search digital products">
+                    <button type="button" class="product-search-btn" aria-label="Search">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+                            <path d="m21 21-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <p class="premium-products-status text-center mt-22" id="premiumProductsStatus" hidden></p>
+            <div class="product-grid" id="premiumProductsGrid"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: 15 POPULAR COUNTRY DRIVING KITS (loaded live from WooCommerce) -->
+    <section class="premium-products-section bg-soft">
+        <div class="container">
+            <h2 class="h2-md text-center">15 Popular Country Driving Kits</h2>
+            <p class="country-kits-status text-center mt-22" id="countryKitsStatus" hidden></p>
+            <div class="product-grid mt-44" id="countryKitsGrid"></div>
+        </div>
+    </section>
+
+    <!-- CTA (same as homepage) -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="h2-lg text-center">Ready for Your Next<br>International
+                Journey?</h2>
+            <p class="lead cta-lead mt-26">Equip yourself with the best driving
+                resources and hit the road with confidence.</p>
+            <div class="cta-road">
+                <div class="cta-road-line"></div>
+                <div class="cta-road-car">
+                    <img src="assets/images/car left to right.png" alt="car" class="cta-car-img">
+                </div>
+            </div>
+            <a href="#" class="btn mt-48">Get
+                Your Travel Guides &amp; Resources <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" aria-hidden="true">
+                    <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg></a>
+        </div>
+    </section>
+
+    <!-- FOOTER (injected from footer.html) -->
+    <div id="site-footer"></div>
+    <script>includeHTML('site-footer', 'footer.html');</script>
+
+    <script src="assets/js/env.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/premium-products.js"></script>
+</body>
+
+</html>

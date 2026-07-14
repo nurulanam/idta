@@ -6,6 +6,13 @@ compatibility_date = "2026-07-01"
 binding = "IDTA_BUCKET"
 bucket_name = "idta-html"
 
+[vars]
+WC_URL = "https://maroon-hornet-289257.hostingersite.com"
+
 # Lock this down to your real site origin(s) once you know them, e.g.:
-# [vars]
 # ALLOWED_ORIGIN = "https://your-domain.com"
+
+# WC_CONSUMER_KEY and WC_CONSUMER_SECRET are NOT set here — they must be
+# added as encrypted Worker secrets instead (never commit them to this file):
+#   npx wrangler secret put WC_CONSUMER_KEY
+#   npx wrangler secret put WC_CONSUMER_SECRET

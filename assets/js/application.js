@@ -57,6 +57,37 @@
         'card-cvc': { test: isValidCardCVC, message: 'Please enter a valid CVC.' }
     };
 
+    // ---------- phone number validation (per selected country) ----------
+    // national significant number digit-count ranges, excluding the dial code
+    var PHONE_RULES = {
+        US: { min: 10, max: 10 }, CA: { min: 10, max: 10 }, GB: { min: 9, max: 10 },
+        AU: { min: 9, max: 9 }, FR: { min: 9, max: 9 }, DE: { min: 10, max: 11 },
+        IN: { min: 10, max: 10 }, CN: { min: 11, max: 11 }, JP: { min: 9, max: 10 },
+        BR: { min: 10, max: 11 }, MX: { min: 10, max: 10 }, ES: { min: 9, max: 9 },
+        IT: { min: 9, max: 10 }, NL: { min: 9, max: 9 }, RU: { min: 10, max: 10 },
+        ZA: { min: 9, max: 9 }, NG: { min: 10, max: 10 }, PK: { min: 10, max: 10 },
+        BD: { min: 10, max: 10 }, PH: { min: 10, max: 10 }, SG: { min: 8, max: 8 },
+        AE: { min: 9, max: 9 }, SA: { min: 9, max: 9 }, EG: { min: 10, max: 10 },
+        KR: { min: 9, max: 10 }, ID: { min: 9, max: 12 }, MY: { min: 9, max: 10 },
+        TH: { min: 9, max: 9 }, VN: { min: 9, max: 10 }, TR: { min: 10, max: 10 },
+        PL: { min: 9, max: 9 }, SE: { min: 7, max: 9 }, NO: { min: 8, max: 8 },
+        DK: { min: 8, max: 8 }, FI: { min: 9, max: 10 }, CH: { min: 9, max: 9 },
+        AT: { min: 10, max: 11 }, BE: { min: 9, max: 9 }, IE: { min: 9, max: 9 },
+        PT: { min: 9, max: 9 }, GR: { min: 10, max: 10 }, NZ: { min: 8, max: 9 }
+    };
+    var PHONE_RULE_DEFAULT = { min: 6, max: 14 };
+
+    function selectedPhoneISO() {
+        var root = document.querySelector('[data-phone-code-select]');
+        return root ? root.dataset.selectedCode : null;
+    }
+
+    function isValidPhoneNumber(value, iso2) {
+        var digits = value.replace(/\D/g, '');
+        var rule = (iso2 && PHONE_RULES[iso2]) || PHONE_RULE_DEFAULT;
+        return digits.length >= rule.min && digits.length <= rule.max;
+    }
+
     // auto-format card fields as the user types
     var cardNumberInput = document.getElementById('card-number');
     if (cardNumberInput) {
@@ -158,8 +189,8 @@
                 var msg = 'This field is required.';
                 if (input.validity.typeMismatch) msg = 'Please enter a valid email address.';
                 fail(input, anchor, msg);
-            } else if (input.type === 'tel' && input.value.replace(/\D/g, '').length < 6) {
-                fail(input, anchor, 'Please enter a valid phone number.');
+            } else if (input.type === 'tel' && !isValidPhoneNumber(input.value, selectedPhoneISO())) {
+                fail(input, anchor, 'Please enter a valid phone number for the selected country.');
             } else if (cardRule && !cardRule.test(input.value)) {
                 fail(input, anchor, cardRule.message);
             } else {
@@ -208,18 +239,42 @@
     }
 
     // live-clear text/email/date/tel/card errors as the user fixes them
+    var phoneCheckIcon = document.getElementById('phoneCheckIcon');
+    function updatePhoneCheckmark(input) {
+        if (phoneCheckIcon) phoneCheckIcon.hidden = !(input.value && isValidPhoneNumber(input.value, selectedPhoneISO()));
+    }
+
     document.querySelectorAll('input[required]:not([type=file]):not([type=checkbox]), textarea[required]').forEach(function (input) {
         var anchor = input.closest('.phone-field') || input;
         var cardRule = CARD_VALIDATORS[input.id];
         input.addEventListener('input', function () {
-            var telInvalid = input.type === 'tel' && input.value.replace(/\D/g, '').length < 6;
+            var telInvalid = input.type === 'tel' && !isValidPhoneNumber(input.value, selectedPhoneISO());
             var cardInvalid = cardRule && !cardRule.test(input.value);
+            if (input.type === 'tel') updatePhoneCheckmark(input);
             if (input.checkValidity() && !telInvalid && !cardInvalid) {
                 clearFieldError(anchor);
                 input.classList.remove('invalid');
             }
         });
+        if (input.type === 'tel') updatePhoneCheckmark(input); // reflect any pre-filled value on load
     });
+
+    // flag an invalid phone number as soon as the user leaves the field,
+    // instead of only on next-step / country-change
+    var phoneInputEl = document.getElementById('app-phone');
+    if (phoneInputEl) {
+        phoneInputEl.addEventListener('blur', function () {
+            if (!phoneInputEl.value) return;
+            var anchor = phoneInputEl.closest('.phone-field') || phoneInputEl;
+            if (isValidPhoneNumber(phoneInputEl.value, selectedPhoneISO())) {
+                clearFieldError(anchor);
+                phoneInputEl.classList.remove('invalid');
+            } else {
+                showFieldError(anchor, 'Please enter a valid phone number for the selected country.');
+                phoneInputEl.classList.add('invalid');
+            }
+        });
+    }
 
     // live-clear required checkboxes (e.g. terms) as soon as they're checked
     document.querySelectorAll('input[type=checkbox][required]').forEach(function (chk) {
@@ -238,6 +293,23 @@
         if (root && root.dataset.required === 'true' && root.dataset.selectedCode) {
             clearFieldError(root);
             root.classList.remove('invalid');
+        }
+    });
+
+    // re-validate the phone number + refresh its checkmark whenever the
+    // calling-code country changes (its digit-length rule depends on it)
+    document.addEventListener('phone-country-changed', function () {
+        var phoneInput = document.getElementById('app-phone');
+        if (!phoneInput) return;
+        updatePhoneCheckmark(phoneInput);
+        if (!phoneInput.value) return; // stay neutral on an empty field
+        var anchor = phoneInput.closest('.phone-field') || phoneInput;
+        if (isValidPhoneNumber(phoneInput.value, selectedPhoneISO())) {
+            clearFieldError(anchor);
+            phoneInput.classList.remove('invalid');
+        } else {
+            showFieldError(anchor, 'Please enter a valid phone number for the selected country.');
+            phoneInput.classList.add('invalid');
         }
     });
 
@@ -295,7 +367,13 @@
         var summaryTotal = document.getElementById('summaryTotal');
         if (selected && summaryPackage && summaryTotal) {
             summaryPackage.textContent = selected.dataset.title;
-            summaryTotal.textContent = selected.dataset.price;
+            if (window.Cart) {
+                var planPrice = Cart.parsePrice(selected.dataset.price);
+                var symbol = Cart.currencySymbol(selected.dataset.price);
+                summaryTotal.textContent = Cart.formatCurrency(planPrice + Cart.getTotal(), symbol);
+            } else {
+                summaryTotal.textContent = selected.dataset.price;
+            }
         }
 
         var issuedEl = document.querySelector('#appLicenseCountry .country-select-value');
@@ -319,6 +397,8 @@
     document.addEventListener('click', function () {
         window.setTimeout(updateSummary, 0);
     });
+
+    document.addEventListener('cart:updated', updateSummary);
 
     // ---------- file uploads ----------
     function truncateFilename(name, maxLength) {
@@ -649,7 +729,8 @@
                 package: (document.getElementById('summaryPackage') || {}).textContent || null,
                 validity: (document.getElementById('summaryValidity') || {}).textContent || null,
                 route: (document.getElementById('summaryRoute') || {}).textContent || null,
-                total: (document.getElementById('summaryTotal') || {}).textContent || null
+                total: (document.getElementById('summaryTotal') || {}).textContent || null,
+                cartItems: window.Cart ? Cart.getItems() : []
             }
         };
 
@@ -677,11 +758,13 @@
                     } catch (err) {
                         console.warn('Could not store submission in sessionStorage (data may be too large):', err);
                     }
+                    if (window.Cart) Cart.clear();
                     window.location.href = 'show.html';
                 });
                 return;
             }
 
+            if (window.Cart) Cart.clear();
             alert('Your application has been submitted! Our team will verify your documents and send your IDP shortly.');
         });
     }

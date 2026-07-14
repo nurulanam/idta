@@ -7,6 +7,7 @@
     <title>Pricing — iDTA</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="assets/js/include.js"></script>
+    <script src="assets/js/env.js"></script>
 </head>
 
 <body>
@@ -35,15 +36,15 @@
             <div class="pricing-tabs">
                 <button type="button" class="plan-tab active" data-plan="0">
                     <div class="plan-price">1-Year Valid</div>
-                    <div class="plan-sub">Expires 2027</div>
+                    <div class="plan-sub plan-sub-skeleton"></div>
                 </button>
                 <button type="button" class="plan-tab" data-plan="1">
                     <div class="plan-price">2-Year Valid</div>
-                    <div class="plan-sub">Expires 2028</div>
+                    <div class="plan-sub plan-sub-skeleton"></div>
                 </button>
                 <button type="button" class="plan-tab" data-plan="2">
                     <div class="plan-price">3-Year Valid</div>
-                    <div class="plan-sub">Expires 2029</div>
+                    <div class="plan-sub plan-sub-skeleton"></div>
                 </button>
             </div>
             <div class="pricing-grid">
@@ -123,7 +124,10 @@
     <div id="site-footer"></div>
     <script>includeHTML('site-footer', 'footer.html');</script>
 
+    <script src="assets/js/cart.js"></script>
+
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/pricing-live.js"></script>
 </body>
 
 </html>

@@ -1,3 +1,14 @@
+// sticky header: only show its shadow once the page has actually scrolled,
+// so it looks like the original flat bar while at the very top
+var siteHeaderBar = document.querySelector('.site-header-bar');
+if (siteHeaderBar) {
+    var updateStickyHeaderShadow = function () {
+        siteHeaderBar.classList.toggle('is-stuck', window.scrollY > 0);
+    };
+    window.addEventListener('scroll', updateStickyHeaderShadow, { passive: true });
+    updateStickyHeaderShadow();
+}
+
 function applyPlanDuration(duration) {
     document.querySelectorAll('.pricing-card').forEach(function (card) {
         var price = card.getAttribute('data-price-' + duration);
@@ -15,6 +26,14 @@ document.querySelectorAll('.plan-tab').forEach(function (btn) {
         btn.classList.add('active');
         applyPlanDuration(btn.dataset.plan);
     });
+
+    // "Expires <year>" is always (this year + validity years), so it never goes stale
+    var subEl = btn.querySelector('.plan-sub');
+    if (subEl) {
+        var validityYears = Number(btn.dataset.plan) + 1;
+        subEl.textContent = 'Expires ' + (new Date().getFullYear() + validityYears);
+        subEl.classList.remove('plan-sub-skeleton');
+    }
 });
 
 document.querySelectorAll('.js-start-application').forEach(function (link) {
@@ -576,6 +595,7 @@ function initPhoneCodeSelect(root) {
             closeDropdown();
             trigger.focus();
         }
+        document.dispatchEvent(new CustomEvent('phone-country-changed', { detail: { rootId: root.id } }));
     }
 
     function scrollActiveIntoView() {
@@ -636,51 +656,42 @@ function initProductSlider(row) {
     var track = row.querySelector('.products-track');
     var prevBtn = row.querySelector('.arrow-btn[data-dir="-1"]');
     var nextBtn = row.querySelector('.arrow-btn[data-dir="1"]');
-    var dotsWrap = row.parentElement.querySelector('.products-dots');
-    var cards = Array.prototype.slice.call(track.children);
-    if (!cards.length) return;
+    if (!track.children.length) return;
 
-    cards.forEach(function (_, i) {
-        var dot = document.createElement('button');
-        dot.type = 'button';
-        dot.className = 'products-dot';
-        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-        dot.addEventListener('click', function () {
-            track.scrollTo({ left: cards[i].offsetLeft - track.offsetLeft, behavior: 'smooth' });
-        });
-        dotsWrap.appendChild(dot);
-    });
-    var dots = Array.prototype.slice.call(dotsWrap.children);
-
+    // queried live (not snapshotted) so cards swapped in later — e.g. once
+    // featured products load from WooCommerce — are measured correctly
     function slideDistance() {
+        var firstCard = track.children[0];
+        if (!firstCard) return 0;
         var style = getComputedStyle(track);
         var gap = parseFloat(style.columnGap || style.gap || 0);
-        return cards[0].getBoundingClientRect().width + gap;
+        return firstCard.getBoundingClientRect().width + gap;
+    }
+
+    function maxScroll() {
+        return track.scrollWidth - track.clientWidth;
     }
 
     function updateState() {
-        var trackRect = track.getBoundingClientRect();
-        var closest = 0;
-        var closestDist = Infinity;
-        cards.forEach(function (card, i) {
-            var dist = Math.abs(card.getBoundingClientRect().left - trackRect.left);
-            if (dist < closestDist) { closestDist = dist; closest = i; }
-        });
-        dots.forEach(function (d, i) { d.classList.toggle('active', i === closest); });
-
-        var maxScroll = track.scrollWidth - track.clientWidth;
-        var atStart = track.scrollLeft <= 4;
-        var atEnd = track.scrollLeft >= maxScroll - 4;
-        prevBtn.disabled = atStart;
-        nextBtn.disabled = maxScroll <= 4 ? true : atEnd;
-        dotsWrap.style.display = maxScroll <= 4 ? 'none' : 'flex';
+        // infinite carousel: the arrows loop instead of disabling at the ends
+        var hasOverflow = maxScroll() > 4;
+        prevBtn.disabled = !hasOverflow;
+        nextBtn.disabled = !hasOverflow;
     }
 
     prevBtn.addEventListener('click', function () {
-        track.scrollBy({ left: -slideDistance(), behavior: 'smooth' });
+        if (track.scrollLeft <= 4) {
+            track.scrollTo({ left: maxScroll(), behavior: 'smooth' });
+        } else {
+            track.scrollBy({ left: -slideDistance(), behavior: 'smooth' });
+        }
     });
     nextBtn.addEventListener('click', function () {
-        track.scrollBy({ left: slideDistance(), behavior: 'smooth' });
+        if (track.scrollLeft >= maxScroll() - 4) {
+            track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+            track.scrollBy({ left: slideDistance(), behavior: 'smooth' });
+        }
     });
 
     var scrollTimeout;

@@ -7,6 +7,7 @@
     <title>iDTA — Drive Anywhere With Confidence</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="assets/js/include.js"></script>
+    <script src="assets/js/env.js"></script>
 </head>
 
 <body>
@@ -44,7 +45,7 @@
                                     alt=""></span><span>24/7 live
                                 chat support</span></div>
                     </div>
-                    <a href="#" class="btn-outline mt-40">Browse
+                    <a href="premium-digital-products.html" class="btn-outline mt-40">Browse
                         Driving Guides <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
                             aria-hidden="true">
                             <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
@@ -165,10 +166,12 @@
                                 <div class="card-price">$12</div>
                                 <p class="card-desc">Master French roundabouts and
                                     speed laws instantly.</p>
+                                <button type="button" class="btn-outline add-to-cart-btn" data-cart-id="usa-driving-kit"
+                                    data-cart-name="USA Driving Kit" data-cart-price="$12"
+                                    data-cart-image="assets/images/Accurate.png">Add to Cart</button>
                             </div>
                             <div class="card-thumb">
-                                <div class="img-placeholder ph-book" role="img" aria-label="book cover"><span>book
-                                        cover</span></div>
+                                <img class="ph-book" src="assets/images/Accurate.png" role="img" aria-label="book cover">
                             </div>
                         </div>
                         <div class="product-card">
@@ -179,6 +182,9 @@
                                 <div class="card-price">$12</div>
                                 <p class="card-desc">A Practical Guide for
                                     International Drivers &amp; Road Travelers</p>
+                                <button type="button" class="btn-outline add-to-cart-btn" data-cart-id="border-crossing-guide"
+                                    data-cart-name="Border Crossing Preparation Guide" data-cart-price="$12"
+                                    data-cart-image="https://placehold.net/400x400.png">Add to Cart</button>
                             </div>
                             <div class="card-thumb">
                                 <div class="img-placeholder ph-book" role="img" aria-label="book cover"><span>book
@@ -193,6 +199,9 @@
                                 <div class="card-price">$12</div>
                                 <p class="card-desc">A Practical Guide to Tourist
                                     Driving Restrictions Around the World</p>
+                                <button type="button" class="btn-outline add-to-cart-btn" data-cart-id="tourist-driving-restrictions-guide"
+                                    data-cart-name="Tourist Driving Restrictions Guide" data-cart-price="$12"
+                                    data-cart-image="https://placehold.net/400x400.png">Add to Cart</button>
                             </div>
                             <div class="card-thumb">
                                 <div class="img-placeholder ph-book" role="img" aria-label="book cover"><span>book
@@ -207,6 +216,9 @@
                                 <div class="card-price">$12</div>
                                 <p class="card-desc">Understand Road Signs
                                     Anywhere You Drive</p>
+                                <button type="button" class="btn-outline add-to-cart-btn" data-cart-id="international-road-signs-guide-1"
+                                    data-cart-name="International Road Signs Guide" data-cart-price="$12"
+                                    data-cart-image="https://placehold.net/400x400.png">Add to Cart</button>
                             </div>
                             <div class="card-thumb">
                                 <div class="img-placeholder ph-book" role="img" aria-label="book cover"><span>book
@@ -221,6 +233,9 @@
                                 <div class="card-price">$12</div>
                                 <p class="card-desc">Understand Road Signs
                                     Anywhere You Drive</p>
+                                <button type="button" class="btn-outline add-to-cart-btn" data-cart-id="international-road-signs-guide-2"
+                                    data-cart-name="International Road Signs Guide" data-cart-price="$12"
+                                    data-cart-image="https://placehold.net/400x400.png">Add to Cart</button>
                             </div>
                             <div class="card-thumb">
                                 <div class="img-placeholder ph-book" role="img" aria-label="book cover"><span>book
@@ -235,10 +250,8 @@
                             stroke-linecap="round" stroke-linejoin="round" />
                     </svg></button>
             </div>
-            <div class="products-dots"></div>
             <div class="center-cta">
-                <a href="#" class="btn">All
-                    Products <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                <a href="premium-digital-products.html" class="btn">All Products <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
                         aria-hidden="true">
                         <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
                             stroke-linecap="round" stroke-linejoin="round" />
@@ -255,7 +268,7 @@
                 <p class="lead steps-lead mt-30">
                     Everything you need to drive abroad: expert guides, road signs, travel checklists, and
                     multilingual driver's licence translations.</p>
-                <a href="#" class="btn mt-44">Browse
+                <a href="premium-digital-products.html" class="btn mt-44">Browse
                     Driving Guides</a>
             </div>
             <div class="steps-grid">
@@ -307,15 +320,15 @@
             <div class="pricing-tabs">
                 <button type="button" class="plan-tab active" data-plan="0">
                     <div class="plan-price">1-Year Valid</div>
-                    <div class="plan-sub">Expires 2027</div>
+                    <div class="plan-sub plan-sub-skeleton"></div>
                 </button>
                 <button type="button" class="plan-tab" data-plan="1">
                     <div class="plan-price">2-Year Valid</div>
-                    <div class="plan-sub">Expires 2028</div>
+                    <div class="plan-sub plan-sub-skeleton"></div>
                 </button>
                 <button type="button" class="plan-tab" data-plan="2">
                     <div class="plan-price">3-Year Valid</div>
-                    <div class="plan-sub">Expires 2029</div>
+                    <div class="plan-sub plan-sub-skeleton"></div>
                 </button>
             </div>
             <div class="pricing-grid">
@@ -542,7 +555,11 @@
     <div id="site-footer"></div>
     <script>includeHTML('site-footer', 'footer.html');</script>
 
+    <script src="assets/js/cart.js"></script>
+
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/pricing-live.js"></script>
+    <script src="assets/js/home-products.js"></script>
 </body>
 
 </html>

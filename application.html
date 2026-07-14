@@ -105,6 +105,12 @@
                                         </div>
                                         <input type="tel" id="app-phone" name="phone" class="input"
                                             placeholder="555 000 0000" required>
+                                        <svg class="phone-check-icon" id="phoneCheckIcon" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" aria-hidden="true" hidden>
+                                            <circle cx="12" cy="12" r="10" fill="currentColor" />
+                                            <path d="m8 12.5 2.5 2.5 5.5-6" stroke="var(--white)" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
                                     </div>
                                 </div>
                             </div>
@@ -341,15 +347,15 @@
                         <div class="pricing-tabs mt-30">
                             <button type="button" class="plan-tab active" data-plan="0">
                                 <div class="plan-price">1-Year Valid</div>
-                                <div class="plan-sub">Expires 2027</div>
+                                <div class="plan-sub plan-sub-skeleton"></div>
                             </button>
                             <button type="button" class="plan-tab" data-plan="1">
                                 <div class="plan-price">2-Year Valid</div>
-                                <div class="plan-sub">Expires 2028</div>
+                                <div class="plan-sub plan-sub-skeleton"></div>
                             </button>
                             <button type="button" class="plan-tab" data-plan="2">
                                 <div class="plan-price">3-Year Valid</div>
-                                <div class="plan-sub">Expires 2029</div>
+                                <div class="plan-sub plan-sub-skeleton"></div>
                             </button>
                         </div>
 
@@ -632,6 +638,16 @@
                                 <span>License Country → Destination</span>
                                 <span id="summaryRoute">—</span>
                             </div>
+
+                            <div class="cart-summary-section" data-cart-section hidden>
+                                <div class="cart-summary-title">Cart Add-ons</div>
+                                <div class="cart-items-list cart-items-list-checkout" data-cart-list></div>
+                                <div class="summary-row">
+                                    <span>Add-ons Subtotal</span>
+                                    <span data-cart-total>$0.00</span>
+                                </div>
+                            </div>
+
                             <div class="summary-row summary-total">
                                 <span>Total</span>
                                 <span id="summaryTotal">$59</span>
@@ -660,7 +676,10 @@
     <div id="site-footer"></div>
     <script>includeHTML('site-footer', 'footer.html');</script>
 
+    <script src="assets/js/cart.js"></script>
+
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/pricing-live.js"></script>
     <script src="assets/js/image-editor.js"></script>
     <script src="assets/js/application.js"></script>
 </body>
