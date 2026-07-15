@@ -258,6 +258,14 @@ function flagEmoji(code) {
     });
 }
 
+// the same gray globe markup used as .form-select-icon's default content,
+// restored on clear since selecting a country replaces it with a flag emoji
+var GLOBE_ICON_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>' +
+    '<line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1.8"/>' +
+    '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.8"/>' +
+    '</svg>';
+
 function buildMatchLabel(name, query) {
     var frag = document.createDocumentFragment();
     var idx = query ? name.toLowerCase().indexOf(query.toLowerCase()) : -1;
@@ -377,7 +385,7 @@ function initCountrySelect(root) {
     function clearSelection() {
         valueEl.textContent = valueEl.dataset.placeholder;
         valueEl.classList.remove('has-value');
-        icon.textContent = '🌐';
+        icon.innerHTML = GLOBE_ICON_SVG;
         clearBtn.hidden = true;
         delete root.dataset.selectedCode;
         notifyChanged();

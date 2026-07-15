@@ -923,6 +923,17 @@ img {
     color: var(--muted-3);
 }
 
+.form-select-icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--muted-3);
+}
+
+.form-select-icon svg {
+    display: block;
+}
+
 .form-select-input {
     flex: 1;
     min-width: 0;
