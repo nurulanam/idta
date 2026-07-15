@@ -36,6 +36,38 @@ document.querySelectorAll('.plan-tab').forEach(function (btn) {
     }
 });
 
+// sliding pill background behind the active plan tab (instead of each tab
+// getting its own static background) — moves/resizes to match whichever
+// tab is active, including when tabs stack into a column on mobile
+document.querySelectorAll('.pricing-tabs').forEach(function (tabsEl) {
+    var indicator = document.createElement('div');
+    indicator.className = 'plan-tab-indicator';
+    tabsEl.insertBefore(indicator, tabsEl.firstChild);
+
+    function moveIndicator(btn, animate) {
+        if (!btn) return;
+        if (!animate) indicator.classList.add('no-transition');
+        indicator.style.width = btn.offsetWidth + 'px';
+        indicator.style.height = btn.offsetHeight + 'px';
+        indicator.style.transform = 'translate(' + btn.offsetLeft + 'px, ' + btn.offsetTop + 'px)';
+        if (!animate) {
+            void indicator.offsetHeight; // force reflow so the transition-less move applies immediately
+            indicator.classList.remove('no-transition');
+        }
+    }
+
+    var tabButtons = tabsEl.querySelectorAll('.plan-tab');
+    moveIndicator(tabsEl.querySelector('.plan-tab.active') || tabButtons[0], false);
+
+    tabButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () { moveIndicator(btn, true); });
+    });
+
+    window.addEventListener('resize', function () {
+        moveIndicator(tabsEl.querySelector('.plan-tab.active'), false);
+    });
+});
+
 document.querySelectorAll('.js-start-application').forEach(function (link) {
     link.addEventListener('click', function (e) {
         var card = link.closest('.pricing-card');
