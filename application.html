@@ -302,7 +302,7 @@
                                 <label for="license-issued-country" class="form-label required">Which Country Issued Your
                                     License?</label>
                                 <div class="form-select country-select" id="appLicenseCountry" data-country-select
-                                    data-exclude-pair="appDestinationCountry" data-required="true">
+                                    data-exclude-pair="appDestinationCountry" data-required="true" data-auto-detect="true">
                                     <span class="form-select-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1.8"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.8"/></svg></span>
                                     <button type="button" id="license-issued-country"
                                         class="form-select-input country-select-trigger" aria-haspopup="listbox"
@@ -346,12 +346,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="country-alert-box" id="appDestinationAlert" hidden>
+                            <span class="country-alert-icon" aria-hidden="true"></span>
+                            <p class="country-alert-text"></p>
+                        </div>
                         <p class="form-note mt-16">Valid in <strong class="text-primary">190+ countries</strong> —
                             for rentals, border crossings, and travel stays. Your IDP is issued alongside your
                             existing driving license and is not valid on its own.</p>
 
                         <div class="pricing-tabs mt-30">
-                            <button type="button" class="plan-tab active" data-plan="0">
+                            <button type="button" class="plan-tab" data-plan="0">
                                 <div class="plan-price">1-Year Valid</div>
                                 <div class="plan-sub plan-sub-skeleton"></div>
                             </button>
@@ -359,7 +363,7 @@
                                 <div class="plan-price">2-Year Valid</div>
                                 <div class="plan-sub plan-sub-skeleton"></div>
                             </button>
-                            <button type="button" class="plan-tab" data-plan="2">
+                            <button type="button" class="plan-tab active" data-plan="2">
                                 <div class="plan-price">3-Year Valid</div>
                                 <div class="plan-sub plan-sub-skeleton"></div>
                             </button>
@@ -367,21 +371,21 @@
 
                         <div class="pricing-grid">
                             <label class="pricing-card plan-select-card selected" data-title="Printed Booklet + Digital IDP"
-                                data-price="$59" data-price-0="$59" data-price-1="$89" data-price-2="$109">
+                                data-price="$109" data-price-0="$59" data-price-1="$89" data-price-2="$109">
+                                <span class="plan-recommended-badge">Recommended</span>
                                 <input type="radio" name="package" value="printed" checked>
                                 <div class="flex-1">
                                     <h3 class="pricing-title">Printed Booklet + Digital IDP</h3>
-                                    <div class="pricing-price mt-18">$59</div>
+                                    <div class="pricing-price mt-18">$109</div>
                                     <p class="pricing-desc mt-20">Perfect for last-minute travellers. Get a
                                         high-resolution digital copy plus a printed booklet shipped to your address.
                                     </p>
-                                    <div class="plan-select-badge">
+                                    <div class="plan-select-badge" aria-label="Selected">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                             aria-hidden="true">
                                             <path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4"
                                                 stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
-                                        Selected
                                     </div>
                                 </div>
                                 <div class="card-thumb card-thumb-wide">
@@ -389,20 +393,19 @@
                                 </div>
                             </label>
                             <label class="pricing-card plan-select-card" data-title="Digital IDP Only"
-                                data-price="$39" data-price-0="$39" data-price-1="$59" data-price-2="$75">
+                                data-price="$75" data-price-0="$39" data-price-1="$59" data-price-2="$75">
                                 <input type="radio" name="package" value="digital">
                                 <div class="flex-1">
                                     <h3 class="pricing-title">Digital IDP Only</h3>
-                                    <div class="pricing-price mt-18">$39</div>
+                                    <div class="pricing-price mt-18">$75</div>
                                     <p class="pricing-desc mt-20">Perfect for last-minute travellers. Get a
                                         high-resolution digital copy with QR verification straight to your email.</p>
-                                    <div class="plan-select-badge">
+                                    <div class="plan-select-badge" aria-label="Selected">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                             aria-hidden="true">
                                             <path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2.4"
                                                 stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
-                                        Selected
                                     </div>
                                 </div>
                                 <div class="card-thumb">
@@ -661,6 +664,8 @@
     <script src="assets/js/cart.js"></script>
 
     <script src="assets/js/app.js"></script>
+
+    <script src="assets/js/reveal.js"></script>
     <script src="assets/js/pricing-live.js"></script>
     <script src="assets/js/image-editor.js"></script>
     <script src="assets/js/application.js"></script>

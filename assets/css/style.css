@@ -334,6 +334,15 @@ img {
     justify-content: center;
 }
 
+.btn:disabled,
+.btn-outline:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+    box-shadow: none;
+}
+
 /* shiny glass hover sweep */
 .btn::before,
 .btn-outline::before {
@@ -807,10 +816,77 @@ img {
 .hero-section {
     padding: 60px 0 90px;
     position: relative;
-    background: radial-gradient(ellipse 900px 500px at 20% 30%, rgba(var(--olive-rgb), 0.06), transparent 70%);
+    overflow: hidden;
+    background: radial-gradient(ellipse 900px 500px at 20% 30%, rgba(var(--olive-rgb), 0.05), transparent 70%);
+}
+
+/* a couple of soft, blurred olive blobs for depth — kept faint so the
+   section still reads as clean/white, not a colored background */
+.hero-section::before,
+.hero-section::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: var(--olive);
+    opacity: 0.10;
+    filter: blur(90px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* glows behind the hero-form card (right column of the grid) */
+.hero-section::before {
+    width: 460px;
+    height: 460px;
+    top: 10%;
+    right: 6%;
+    animation: hero-blob-float-a 10s ease-in-out infinite;
+}
+
+/* sits a little inside the left edge, behind the hero-copy heading */
+.hero-section::after {
+    width: 360px;
+    height: 360px;
+    top: 5%;
+    left: 4%;
+    animation: hero-blob-float-b 12s ease-in-out infinite;
+}
+
+@keyframes hero-blob-float-a {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(-16px, 20px) scale(1.06);
+    }
+}
+
+@keyframes hero-blob-float-b {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(18px, -14px) scale(1.05);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-section::before,
+    .hero-section::after {
+        animation: none;
+    }
 }
 
 .hero-grid {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: 1fr 60px 480px;
     gap: 0;
@@ -907,7 +983,7 @@ img {
 .hero-form {
     background: var(--white);
     border-radius: 22px;
-    box-shadow: 0 30px 70px rgba(var(--dark-shadow-rgb), 0.10);
+    box-shadow: 0 30px 70px rgba(var(--olive-rgb), 0.18);
     padding: 35px 30px 30px;
     margin-left: 50px;
 }
@@ -1004,6 +1080,78 @@ img {
 
 .country-clear[hidden] {
     display: none;
+}
+
+/* ---------- destination country acceptance alert ---------- */
+.country-alert-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.55;
+    animation: country-alert-in .3s ease;
+}
+
+.country-alert-box[hidden] {
+    display: none;
+}
+
+#heroDestinationAlert {
+    margin-bottom: 0;
+}
+
+.country-alert-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+}
+
+.country-alert-text {
+    margin: 0;
+}
+
+.country-alert-text span {
+    font-weight: 700;
+}
+
+.country-alert-box.is-ok {
+    background: var(--olive-light);
+    color: var(--ink);
+}
+
+.country-alert-box.is-ok .country-alert-icon {
+    color: var(--success);
+}
+
+.country-alert-box.is-blocked {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+.country-alert-box.is-blocked .country-alert-icon {
+    color: var(--danger);
+}
+
+@keyframes country-alert-in {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .country-alert-box {
+        animation: none;
+    }
 }
 
 .country-dropdown {
@@ -1135,6 +1283,7 @@ img {
 
 .product-card {
     flex: 0 0 calc((100% - 3 * 26px) / 4);
+    min-width: 0;
     scroll-snap-align: start;
     background: var(--white);
     border-radius: 18px;
@@ -1142,12 +1291,21 @@ img {
     display: flex;
     gap: 14px;
     box-shadow: 0 12px 30px rgba(var(--dark-shadow-rgb), 0.05);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+/* only lift on hover in static grids — inside the home page's horizontally
+   scrollable carousel the vertical lift reads as janky/scroll-like motion */
+.product-grid .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(var(--dark-shadow-rgb), 0.12);
 }
 
 /* ---------- get ready / 4 steps ---------- */
 .steps-section {
     background: var(--white);
     padding: 90px 0;
+    overflow: hidden;
 }
 
 .steps-layout {
@@ -1162,12 +1320,32 @@ img {
    a shared grid row would otherwise stretch to fit the offset column and
    throw off the other column's spacing */
 .steps-grid {
+    position: relative;
     display: flex;
     align-items: flex-start;
     gap: 26px;
 }
 
+/* soft blurred olive glow centered behind the step cards, echoing the hero blobs */
+.steps-grid::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 380px;
+    height: 380px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: var(--olive);
+    opacity: 0.10;
+    filter: blur(90px);
+    z-index: 0;
+    pointer-events: none;
+}
+
 .steps-col {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     gap: 26px;
@@ -1185,6 +1363,7 @@ img {
     padding: 34px 32px;
     position: relative;
     transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+    background: var(--white);
 }
 
 .step-card:hover {
@@ -1349,17 +1528,38 @@ img {
 .flag-row {
     background: var(--white);
     border-radius: 12px;
-    padding: 16px 26px;
-    display: flex;
+    padding: 16px 22px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
+    gap: 14px;
+    box-shadow: 0 8px 20px rgba(var(--dark-shadow-rgb), 0.05);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.flag-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(var(--dark-shadow-rgb), 0.12);
 }
 
 .flag-item {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     font-weight: 600;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.flag-item:last-child {
+    justify-content: flex-end;
+}
+
+.flag-arrow {
+    justify-self: center;
+    font-weight: 700;
 }
 
 /* ---------- reviews ---------- */
@@ -1994,6 +2194,28 @@ img {
     }
 }
 
+/* ---------- scroll reveal (assets/js/reveal.js) ---------- */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .4s cubic-bezier(.16, .8, .3, 1), transform .4s cubic-bezier(.16, .8, .3, 1);
+    transition-delay: var(--reveal-delay, 0s);
+    will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
 /* ---------- utilities ---------- */
 .flex-1 {
     flex: 1;
@@ -2112,6 +2334,8 @@ img {
 .card-thumb {
     width: 110px;
     flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 6px;
 }
 
 /* the printed-booklet thumbnail is a landscape image — a bit wider than the
@@ -2138,6 +2362,10 @@ img {
 
 .premium-products-section .product-card {
     box-shadow: 0 12px 30px rgba(var(--olive-rgb), 0.16);
+}
+
+.premium-products-section .product-card:hover {
+    box-shadow: 0 20px 40px rgba(var(--olive-rgb), 0.26);
 }
 
 /* ---------- static 3-column product grid (non-carousel pages) ---------- */
@@ -2277,6 +2505,7 @@ img {
     font-size: 20px;
     font-weight: 700;
     line-height: 1.25;
+    overflow-wrap: break-word;
 }
 
 .card-stars {
@@ -2310,6 +2539,7 @@ img {
 .product-card .flex-1 {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .product-card .card-desc {
@@ -3088,20 +3318,67 @@ img {
     position: absolute;
     top: 20px;
     right: 20px;
+    width: 28px;
+    height: 28px;
     align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    font-weight: 700;
+    justify-content: center;
     color: var(--white);
     background: var(--olive);
-    padding: 6px 12px;
-    border-radius: 20px;
+    border-radius: 50%;
     box-shadow: 0 8px 18px rgba(var(--dark-shadow-rgb), 0.18);
     z-index: 1;
 }
 
 .plan-select-card.selected .plan-select-badge {
     display: inline-flex;
+}
+
+/* always-on marketing badge (independent of selection state) — sits opposite
+   the "Selected" pill so the two never collide */
+.plan-recommended-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--olive-dark);
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 8px 18px rgba(var(--dark-shadow-rgb), 0.18);
+    z-index: 1;
+}
+
+.plan-recommended-badge[hidden] {
+    display: none;
+}
+
+/* this card renders narrower here than on pricing.html/index.html (it shares
+   space with the order-summary column), so scale text and the thumb down to fit */
+.plan-select-card .pricing-title {
+    font-size: 22px;
+    margin-top: 34px;
+}
+
+.plan-select-card .pricing-price {
+    font-size: 26px;
+}
+
+.plan-select-card .pricing-price-regular {
+    font-size: 15px;
+}
+
+.plan-select-card .pricing-desc {
+    font-size: 15px;
+}
+
+.plan-select-card .card-thumb {
+    width: 80px;
+    margin-top: 30px;
+}
+
+.plan-select-card .card-thumb-wide {
+    width: 140px;
 }
 
 .upload-field input {
@@ -3811,3 +4088,4 @@ img {
         grid-template-columns: 1fr;
     }
 }
+

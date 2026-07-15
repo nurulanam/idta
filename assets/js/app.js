@@ -266,6 +266,23 @@ var GLOBE_ICON_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none
     '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.8"/>' +
     '</svg>';
 
+// resolves the visitor's country code from their IP — tries ipwho.is first,
+// then falls back to get.geojs.io, since ad-blockers / privacy extensions
+// commonly block one geo-IP provider but not the other
+function lookupCountryByIP() {
+    if (!window.fetch) return Promise.resolve(null);
+    return fetch('https://ipwho.is/').then(function (r) { return r.json(); }).then(function (data) {
+        if (data && data.success !== false && data.country_code) return data.country_code;
+        throw new Error('ipwho.is lookup failed');
+    }).catch(function () {
+        return fetch('https://get.geojs.io/v1/ip/geo.json').then(function (r) { return r.json(); }).then(function (data) {
+            return (data && data.country_code) || null;
+        });
+    }).catch(function () {
+        return null;
+    });
+}
+
 function buildMatchLabel(name, query) {
     var frag = document.createDocumentFragment();
     var idx = query ? name.toLowerCase().indexOf(query.toLowerCase()) : -1;
@@ -371,14 +388,16 @@ function initCountrySelect(root) {
         document.dispatchEvent(new CustomEvent('country-select-changed', { detail: { rootId: root.id } }));
     }
 
-    function selectCountry(c) {
+    function selectCountry(c, silent) {
         valueEl.textContent = c.name;
         valueEl.classList.add('has-value');
         icon.textContent = flagEmoji(c.code);
         clearBtn.hidden = false;
         root.dataset.selectedCode = c.code;
-        closeDropdown();
-        trigger.focus();
+        if (!silent) {
+            closeDropdown();
+            trigger.focus();
+        }
         notifyChanged();
     }
 
@@ -437,9 +456,98 @@ function initCountrySelect(root) {
             if (e.detail && e.detail.rootId === pairId) filterList(query);
         });
     }
+
+    // opt-in (via data-auto-detect="true") auto-fill from the visitor's location —
+    // used for "license issued in" fields, never for destination/birth/billing fields
+    if (root.dataset.autoDetect === 'true') {
+        var guessCode = detectBrowserCountryCode();
+        var guessCountry = COUNTRIES.filter(function (c) { return c.code === guessCode; })[0];
+        if (guessCountry) selectCountry(guessCountry, true);
+
+        lookupCountryByIP().then(function (code) {
+            // don't override a manual selection made while the lookup was in flight
+            if (root.dataset.selectedCode && root.dataset.selectedCode !== guessCode) return;
+            var match = code && COUNTRIES.filter(function (c) { return c.code === code; })[0];
+            if (match) selectCountry(match, true);
+            // else: offline, blocked, or the service is unavailable — keep the locale-based guess
+        });
+    }
 }
 
 document.querySelectorAll('[data-country-select]').forEach(initCountrySelect);
+
+// looks up a destination country's acceptance note (see countryInfo above);
+// falls back to a generic "works" message for the ~170+ countries we don't
+// have specific notes for
+function countryAcceptanceInfo(code, destName) {
+    var entry = code ? countryInfo[code.toLowerCase()] : null;
+    if (entry) {
+        return { message: entry[1], blocked: entry[2] === 'blocked' };
+    }
+    return {
+        message: 'Our International Driving Permit works in <span>' + destName +
+            '</span>. The accepted formats include a Printed and Digital IDP valid for 1-3 years, ' +
+            'or a Digital Only IDP along with a valid driver’s license.',
+        blocked: false
+    };
+}
+
+var COUNTRY_ALERT_OK_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="10" fill="currentColor"/>' +
+    '<path d="m8 12.5 2.5 2.5 5.5-6" stroke="var(--white)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg>';
+var COUNTRY_ALERT_BLOCKED_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>' +
+    '<path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' +
+    '</svg>';
+
+// shows an inline alert box under a destination-country select as soon as it
+// changes, and disables the given "continue" buttons while the country is blocked
+function initDestinationCountryAlert(destRootId, alertId, blockedSelectors) {
+    var destRoot = document.getElementById(destRootId);
+    var alertBox = document.getElementById(alertId);
+    if (!destRoot || !alertBox) return;
+
+    var iconEl = alertBox.querySelector('.country-alert-icon');
+    var textEl = alertBox.querySelector('.country-alert-text');
+    var blockedEls = (blockedSelectors || [])
+        .map(function (sel) { return document.querySelector(sel); })
+        .filter(Boolean);
+
+    function setBlocked(isBlocked) {
+        blockedEls.forEach(function (el) { el.disabled = isBlocked; });
+    }
+
+    function update() {
+        var destCode = destRoot.dataset.selectedCode;
+        if (!destCode) {
+            alertBox.hidden = true;
+            setBlocked(false);
+            return;
+        }
+
+        var destValueEl = destRoot.querySelector('.country-select-value');
+        var destName = destValueEl ? destValueEl.textContent.trim() : 'your destination';
+        var info = countryAcceptanceInfo(destCode, destName);
+
+        textEl.innerHTML = info.message;
+        iconEl.innerHTML = info.blocked ? COUNTRY_ALERT_BLOCKED_ICON : COUNTRY_ALERT_OK_ICON;
+        alertBox.classList.toggle('is-blocked', info.blocked);
+        alertBox.classList.toggle('is-ok', !info.blocked);
+        alertBox.hidden = false;
+        setBlocked(info.blocked);
+    }
+
+    document.addEventListener('country-select-changed', function (e) {
+        if (!e.detail || e.detail.rootId !== destRootId) return;
+        update();
+    });
+
+    update(); // reflect a pre-filled value (e.g. redirected in with a URL param) immediately
+}
+
+initDestinationCountryAlert('heroDestinationCountrySelect', 'heroDestinationAlert', ['#heroCountryForm button[type="submit"]']);
+initDestinationCountryAlert('appDestinationCountry', 'appDestinationAlert', ['.form-step[data-step-panel="1"] .step-next']);
 
 var heroCountryForm = document.getElementById('heroCountryForm');
 if (heroCountryForm) {
@@ -679,15 +787,11 @@ function initPhoneCodeSelect(root) {
     var guessCountry = PHONE_COUNTRIES.filter(function (c) { return c.code === guessCode; })[0];
     if (guessCountry) selectCountry(guessCountry, true);
 
-    if (window.fetch) {
-        fetch('https://ipwho.is/').then(function (r) { return r.json(); }).then(function (data) {
-            var code = data && data.country_code;
-            var match = code && PHONE_COUNTRIES.filter(function (c) { return c.code === code; })[0];
-            if (match) selectCountry(match, true);
-        }).catch(function () {
-            // offline, blocked, or the service is unavailable — keep the locale-based guess
-        });
-    }
+    lookupCountryByIP().then(function (code) {
+        var match = code && PHONE_COUNTRIES.filter(function (c) { return c.code === code; })[0];
+        if (match) selectCountry(match, true);
+        // else: offline, blocked, or the service is unavailable — keep the locale-based guess
+    });
 }
 
 document.querySelectorAll('[data-phone-code-select]').forEach(initPhoneCodeSelect);

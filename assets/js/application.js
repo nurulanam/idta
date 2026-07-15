@@ -812,6 +812,10 @@
             tab.classList.add('active');
             if (window.applyPlanDuration) window.applyPlanDuration(durationParam);
         }
+    } else {
+        // no URL override — sync prices to whichever tab is active by default
+        var defaultTab = document.querySelector('.plan-tab.active');
+        if (defaultTab && window.applyPlanDuration) window.applyPlanDuration(defaultTab.dataset.plan);
     }
 
     var packageParam = urlParams.get('package');
