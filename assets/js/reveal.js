@@ -5,8 +5,11 @@
 
     // ---------- fade-up reveal on scroll ----------
     // (skeleton cards are excluded — they're loading placeholders, not content to fade in)
+    // scoped to `.product-grid` (premium-digital-products.html's static listings) —
+    // the home page's `.products-track` carousel is intentionally excluded, since a
+    // fade-up on cards the user has to scroll horizontally through feels off
     var REVEAL_SELECTORS = [
-        '.product-card:not(.product-card-skeleton)', '.why-card', '.step-card', '.badge-card',
+        '.product-grid .product-card:not(.product-card-skeleton)', '.why-card', '.step-card', '.badge-card',
         '.review-card', '.pricing-card', '.destination-content > *',
         '.page-header .h2-lg', '.h2-md', '.h2-faq'
     ];

@@ -14,7 +14,7 @@
 
     <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
     <div id="site-header"></div>
-    <script>includeHTML('site-header', 'header.html');</script>
+    <script>includeHTML('site-header', 'includes/header.html');</script>
 
     <!-- PAGE HEADER -->
     <section class="page-header">
@@ -659,9 +659,11 @@
 
     <!-- FOOTER (injected from footer.html) -->
     <div id="site-footer"></div>
-    <script>includeHTML('site-footer', 'footer.html');</script>
+    <script>includeHTML('site-footer', 'includes/footer.html');</script>
 
     <script src="assets/js/cart.js"></script>
+
+    <script src="assets/js/countries-data.js"></script>
 
     <script src="assets/js/app.js"></script>
 

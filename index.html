@@ -14,7 +14,7 @@
 
     <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
     <div id="site-header"></div>
-    <script>includeHTML('site-header', 'header.html');</script>
+    <script>includeHTML('site-header', 'includes/header.html');</script>
 
     <!-- HERO -->
     <section class="hero-section">
@@ -385,77 +385,39 @@
         </div>
     </section>
 
-    <!-- WHY SMART TRAVELERS -->
-    <section class="why-section">
-        <div class="container">
-            <h2 class="h2-md text-center">Why Smart
-                Travelers<br>Choose Our Resources</h2>
-            <div class="why-grid">
-                <div class="why-card">
-                    <div class="why-icon">
-                        <img src="assets/images/Accurate.png" alt="Accurate">
-                    </div>
-                    <h3 class="why-title">Accurate</h3>
-                    <p class="why-desc">Prepared using
-                        internationally recognized and verified driving information.</p>
-                </div>
-                <div class="why-card">
-                    <div class="why-icon">
-                        <img src="assets/images/Professional.png" alt="Professional">
-                    </div>
-                    <h3 class="why-title">Professional</h3>
-                    <p class="why-desc">High-quality,
-                        beautifully formatted, and easily printable PDF documents.</p>
-                </div>
-                <div class="why-card">
-                    <div class="why-icon">
-                        <img src="assets/images/Instant Access.png" alt="Instant Access">
-                    </div>
-                    <h3 class="why-title">Instant Access</h3>
-                    <p class="why-desc">No waiting time.
-                        Download your resources immediately after a secure purchase.</p>
-                </div>
-                <div class="why-card">
-                    <div class="why-icon">
-                        <img src="assets/images/Regular Updates.png" alt="Regular Updates">
-                    </div>
-                    <h3 class="why-title">Regular Updates</h3>
-                    <p class="why-desc">Our content is
-                        continuously reviewed and updated when regulations change.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- WHY SMART TRAVELERS (injected from includes/why-section.html) -->
+    <div id="why-section-slot"></div>
+    <script>includeHTML('why-section-slot', 'includes/why-section.html');</script>
 
     <!-- EXPLORE BY DESTINATION -->
     <section class="destination-section">
         <div class="destination-content">
             <h2 class="h2-md text-white text-center">Explore Guides by<br>Destination</h2>
             <div class="flags-grid">
-                <div class="flag-row">
-                    <span class="flag-item">🇺🇸 USA</span><span class="flag-arrow">→</span><span class="flag-item">🇨🇦
-                        Canada</span>
-                </div>
-                <div class="flag-row">
-                    <span class="flag-item">🇬🇧 UK</span><span class="flag-arrow">→</span><span class="flag-item">🇬🇷
-                        Greece</span>
-                </div>
-                <div class="flag-row">
-                    <span class="flag-item">🇦🇫 Afghanistan</span><span class="flag-arrow">→</span><span
-                        class="flag-item">🇩🇪 Germany</span>
-                </div>
-                <div class="flag-row">
-                    <span class="flag-item">🇮🇪 Ireland</span><span class="flag-arrow">→</span><span
-                        class="flag-item">🇦🇺 Australia</span>
-                </div>
-                <div class="flag-row">
-                    <span class="flag-item">🇩🇰 Denmark</span><span class="flag-arrow">→</span><span
-                        class="flag-item">🇦🇩 Andorra</span>
-                </div>
-                <div class="flag-row">
-                    <span class="flag-item">🇲🇽 Mexico</span><span class="flag-arrow">→</span><span
-                        class="flag-item">🇮🇳 India</span>
-                </div>
+                <a class="flag-row" href="check-permit.html?countryName=mexico">
+                    <span class="flag-item">🇺🇸 USA</span><span class="flag-arrow">→</span><span class="flag-item">🇲🇽
+                        Mexico</span>
+                </a>
+                <a class="flag-row" href="check-permit.html?countryName=france">
+                    <span class="flag-item">🇬🇧 UK</span><span class="flag-arrow">→</span><span class="flag-item">🇫🇷
+                        France</span>
+                </a>
+                <a class="flag-row" href="check-permit.html?countryName=united-states">
+                    <span class="flag-item">🇨🇦 Canada</span><span class="flag-arrow">→</span><span
+                        class="flag-item">🇺🇸 USA</span>
+                </a>
+                <a class="flag-row" href="check-permit.html?countryName=new-zealand">
+                    <span class="flag-item">🇦🇺 Australia</span><span class="flag-arrow">→</span><span
+                        class="flag-item">🇳🇿 New Zealand</span>
+                </a>
+                <a class="flag-row" href="check-permit.html?countryName=italy">
+                    <span class="flag-item">🇩🇪 Germany</span><span class="flag-arrow">→</span><span
+                        class="flag-item">🇮🇹 Italy</span>
+                </a>
+                <a class="flag-row" href="check-permit.html?countryName=united-arab-emirates">
+                    <span class="flag-item">🇮🇳 India</span><span class="flag-arrow">→</span><span
+                        class="flag-item">🇦🇪 UAE</span>
+                </a>
             </div>
         </div>
     </section>
@@ -532,33 +494,17 @@
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta-section">
-        <div class="container">
-            <h2 class="h2-lg text-center">Ready for Your Next<br>International
-                Journey?</h2>
-            <p class="lead cta-lead mt-26">Equip yourself with the best driving
-                resources and hit the road with confidence.</p>
-            <div class="cta-road">
-                <div class="cta-road-line"></div>
-                <div class="cta-road-car">
-                    <img src="assets/images/car left to right.png" alt="car" class="cta-car-img">
-                </div>
-            </div>
-            <a href="#" class="btn mt-48">Get
-                Your Travel Guides &amp; Resources <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24"
-                    fill="none" aria-hidden="true">
-                    <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg></a>
-        </div>
-    </section>
+    <!-- CTA (injected from includes/cta-guides-section.html) -->
+    <div id="cta-guides-slot"></div>
+    <script>includeHTML('cta-guides-slot', 'includes/cta-guides-section.html');</script>
 
     <!-- FOOTER (injected from footer.html) -->
     <div id="site-footer"></div>
-    <script>includeHTML('site-footer', 'footer.html');</script>
+    <script>includeHTML('site-footer', 'includes/footer.html');</script>
 
     <script src="assets/js/cart.js"></script>
+
+    <script src="assets/js/countries-data.js"></script>
 
     <script src="assets/js/app.js"></script>
 

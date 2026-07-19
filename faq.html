@@ -13,7 +13,7 @@
 
     <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
     <div id="site-header"></div>
-    <script>includeHTML('site-header', 'header.html');</script>
+    <script>includeHTML('site-header', 'includes/header.html');</script>
 
     <!-- PAGE HEADER -->
     <section class="page-header">
@@ -73,40 +73,39 @@
                     </div>
                 </div>
 
-                <h2 class="faq-category-heading">Your Documents</h2>
+                <h2 class="faq-category-heading">Your Application &amp; Documents</h2>
                 <div class="faq-list">
                     <div class="faq-item">
                         <button class="faq-toggle">
-                            <span class="faq-question">Can I use these guides offline?</span>
+                            <span class="faq-question">What do I need to apply for an IDP?</span>
                             <span class="chev">⌄</span>
                         </button>
-                        <p class="faq-answer">Yes! Once downloaded, you can save the PDFs directly to your
-                            smartphone, tablet, or laptop and access them anytime without an internet connection.
-                        </p>
+                        <p class="faq-answer">A valid driver's license, a passport-style photo, and your travel
+                            destination. Most applications take less than 5 minutes to complete online.</p>
                     </div>
                     <div class="faq-item">
                         <button class="faq-toggle">
-                            <span class="faq-question">Are the PDFs printable?</span>
+                            <span class="faq-question">Do I need to upload a photo?</span>
                             <span class="chev">⌄</span>
                         </button>
-                        <p class="faq-answer">Absolutely. Every guide is formatted as a high-quality, print-ready
-                            PDF so you can keep a physical copy with you on the road.</p>
+                        <p class="faq-answer">Yes — we require a clear, passport-style photo to match the format
+                            used on official IDP booklets. You can upload one directly during checkout.</p>
                     </div>
                     <div class="faq-item">
                         <button class="faq-toggle">
-                            <span class="faq-question">Do you update your guides?</span>
+                            <span class="faq-question">Can I edit my application after submitting it?</span>
                             <span class="chev">⌄</span>
                         </button>
-                        <p class="faq-answer">Yes. Our content is continuously reviewed and updated whenever
-                            driving regulations change so you always have accurate information.</p>
+                        <p class="faq-answer">Contact our support team as soon as possible if you spot an error —
+                            we can usually update your details before your IDP is issued.</p>
                     </div>
                     <div class="faq-item">
                         <button class="faq-toggle">
-                            <span class="faq-question">How do downloads work?</span>
+                            <span class="faq-question">What if my driver's license is close to expiring?</span>
                             <span class="chev">⌄</span>
                         </button>
-                        <p class="faq-answer">After a secure checkout, you receive an instant download link by
-                            email and can access your files immediately from your account.</p>
+                        <p class="faq-answer">Your IDP can only be issued for as long as your underlying license
+                            remains valid, so we recommend renewing your license first if it's close to expiring.</p>
                     </div>
                 </div>
 
@@ -191,9 +190,11 @@
 
     <!-- FOOTER (injected from footer.html) -->
     <div id="site-footer"></div>
-    <script>includeHTML('site-footer', 'footer.html');</script>
+    <script>includeHTML('site-footer', 'includes/footer.html');</script>
 
     <script src="assets/js/cart.js"></script>
+
+    <script src="assets/js/countries-data.js"></script>
 
     <script src="assets/js/app.js"></script>
 

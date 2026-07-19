@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title id="permitPageTitle">Check Your IDP — iDTA</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/include.js"></script>
+    <script src="assets/js/env.js"></script>
+</head>
+
+<body>
+
+    <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
+    <div id="site-header"></div>
+    <script>includeHTML('site-header', 'includes/header.html');</script>
+
+    <!-- PAGE HEADER + APPLICATION FORM -->
+    <section class="page-header permit-header">
+        <div class="container permit-header-grid">
+            <div class="permit-header-copy">
+                <h1 class="h2-lg">International Driving Permit for <span class="text-primary"
+                        id="permitCountryName">Your Destination</span></h1>
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="breadcrumb-sep">/</span>
+                    <a href="countries.html">Country Check</a>
+                    <span class="breadcrumb-sep">/</span>
+                    <span class="breadcrumb-current" id="permitBreadcrumb">Destination</span>
+                </div>
+                <p class="lead page-header-lead" id="permitCountryDesc">Check whether your IDP is accepted at your
+                    destination, then complete your application online in minutes — no paperwork, no embassy visits.
+                </p>
+            </div>
+            <div class="permit-form-card">
+                <h2 class="form-title">Start Your Application</h2>
+                <p class="form-subtitle">We've set your destination — just tell us where your license was issued.</p>
+
+                <!-- destination is locked to the country in the URL; kept in the DOM
+                     (hidden) so the existing validation/alert wiring still works -->
+                <div class="form-select-hidden">
+                    <label for="permit-destination-country" class="form-label mt-30">Where are you going?</label>
+                    <div class="form-select country-select" id="permitDestinationCountrySelect" data-country-select
+                        data-exclude-pair="permitLicenseCountrySelect">
+                        <span class="form-select-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1.8"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.8"/></svg></span>
+                        <button type="button" id="permit-destination-country"
+                            class="form-select-input country-select-trigger" aria-haspopup="listbox"
+                            aria-expanded="false">
+                            <span class="country-select-value" data-placeholder="Select destination">Select
+                                destination</span>
+                        </button>
+                        <button type="button" class="country-clear" aria-label="Clear selection" hidden>×</button>
+                        <div class="country-dropdown" role="listbox">
+                            <div class="country-search-wrap">
+                                <span class="country-search-icon" aria-hidden="true">🔍</span>
+                                <input type="text" class="country-search-input" placeholder="Search countries…"
+                                    autocomplete="off">
+                            </div>
+                            <div class="country-options"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="country-alert-box" id="permitDestinationAlert" hidden>
+                    <span class="country-alert-icon" aria-hidden="true"></span>
+                    <p class="country-alert-text"></p>
+                </div>
+
+                <form action="" method="get" class="country-form" id="permitCountryForm">
+                    <label for="permit-license-country" class="form-label mt-22">Where was your license
+                        issued?</label>
+                    <div class="form-select country-select" id="permitLicenseCountrySelect" data-country-select
+                        data-exclude-pair="permitDestinationCountrySelect" data-auto-detect="true">
+                        <span class="form-select-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1.8"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.8"/></svg></span>
+                        <button type="button" id="permit-license-country"
+                            class="form-select-input country-select-trigger" aria-haspopup="listbox"
+                            aria-expanded="false">
+                            <span class="country-select-value" data-placeholder="Select your country">Select your
+                                country</span>
+                        </button>
+                        <button type="button" class="country-clear" aria-label="Clear selection" hidden>×</button>
+                        <div class="country-dropdown" role="listbox">
+                            <div class="country-search-wrap">
+                                <span class="country-search-icon" aria-hidden="true">🔍</span>
+                                <input type="text" class="country-search-input" placeholder="Search countries…"
+                                    autocomplete="off">
+                            </div>
+                            <div class="country-options"></div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-block mt-28">Start
+                        My Application <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            aria-hidden="true">
+                            <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT'S INCLUDED -->
+    <section class="included-section">
+        <div class="container included-grid">
+            <div class="included-slider-col">
+                <div class="products-row included-slider">
+                    <button type="button" class="arrow-btn" data-dir="-1" aria-label="Previous"><svg width="20"
+                            height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M20 12H4m0 0 6-6m-6 6 6 6" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></button>
+                    <div class="products-viewport">
+                        <div class="products-track">
+                            <div class="included-slide"><img src="assets/images/print-digital-thumb.png"
+                                    alt="Printed IDP booklet"></div>
+                            <div class="included-slide"><img src="assets/images/digital-thumb.png"
+                                    alt="Digital IDP"></div>
+                            <div class="included-slide"><img src="assets/images/car.png"
+                                    alt="Drive with confidence"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="arrow-btn" data-dir="1" aria-label="Next"><svg width="20"
+                            height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></button>
+                </div>
+            </div>
+            <div class="included-copy-col">
+                <h2 class="h2-md">What's Included?</h2>
+                <ul class="included-list">
+                    <li class="included-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>
+                        Officially formatted IDP booklet, translated into 12 languages</li>
+                    <li class="included-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>
+                        Digital copy with secure QR verification</li>
+                    <li class="included-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Free
+                        global express shipping</li>
+                    <li class="included-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>24/7
+                        customer support before and during your trip</li>
+                </ul>
+                <ul class="facility-list">
+                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Lowest
+                        price guarantee</li>
+                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Approved
+                        by the UN</li>
+                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Rent cars
+                        easily</li>
+                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Simple
+                        &amp; fast application</li>
+                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Valid
+                        from 1 to 3 years</li>
+                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Global
+                        express shipping</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT DESTINATION -->
+    <section class="permit-about-section">
+        <div class="container">
+            <h2 class="h2-md text-center">Driving in <span class="text-primary"
+                    id="permitAboutCountry">Your Destination</span></h2>
+            <p class="lead permit-about-lead text-center" id="permitAboutBody">Your International Driving Permit acts
+                as an official translation of your home license, recognized by local authorities, police, and car
+                rental agencies — so you can hit the road with confidence, without any language barrier or paperwork
+                surprises.</p>
+            <p class="lead permit-about-lead mt-16 text-center" id="permitAboutBody2">Always carry your IDP alongside
+                your original, valid driver's license — it's a translation and companion document, not a
+                replacement. Rules on required validity and accepted formats can vary, so double-check with your
+                rental agency or local authorities if you're unsure before you set off.</p>
+        </div>
+    </section>
+
+    <!-- WHY SMART TRAVELERS (injected from includes/why-section.html) -->
+    <div id="why-section-slot"></div>
+    <script>includeHTML('why-section-slot', 'includes/why-section.html');</script>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="h2-faq text-center">Frequently Asked Questions (FAQ)</h2>
+            <p class="faq-subtitle">Find answers to common
+                questions about your International Driving Permit.</p>
+            <div class="faq-list">
+                <div class="faq-item open">
+                    <button class="faq-toggle">
+                        <span class="faq-question">Is an IDP accepted everywhere I
+                            travel?</span>
+                        <span class="chev">⌄</span>
+                    </button>
+                    <p class="faq-answer">
+                        Acceptance varies by country. Use the eligibility check above — it flags whether a Printed +
+                        Digital IDP or a Digital Only IDP is the right fit for your destination.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-toggle">
+                        <span class="faq-question">How long does it take to receive my
+                            IDP?</span>
+                        <span class="chev">⌄</span>
+                    </button>
+                    <p class="faq-answer">
+                        Digital IDPs are delivered by email within minutes of verification. Printed booklets ship via
+                        global express shipping and typically arrive within a few business days.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-toggle">
+                        <span class="faq-question">Do I still need my original driver's
+                            license?</span>
+                        <span class="chev">⌄</span>
+                    </button>
+                    <p class="faq-answer">Yes.
+                        An IDP is a translation and companion document — always carry it alongside your valid,
+                        original driver's license.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-toggle">
+                        <span class="faq-question">How long is my IDP valid for?</span>
+                        <span class="chev">⌄</span>
+                    </button>
+                    <p class="faq-answer">You can choose
+                        1, 2, or 3-year validity during checkout, so it can cover a single trip or several years of
+                        travel.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-toggle">
+                        <span class="faq-question">Can I use my IDP to rent a
+                            car?</span>
+                        <span class="chev">⌄</span>
+                    </button>
+                    <p class="faq-answer">
+                        Yes — most car rental agencies abroad accept an IDP alongside your original license, making
+                        it much easier to rent a car at your destination.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="h2-lg text-center">Ready for Your Next<br>International
+                Journey?</h2>
+            <p class="lead cta-lead mt-26">Equip yourself with a verified International Driving Permit
+                and hit the road with confidence.</p>
+            <div class="cta-road">
+                <div class="cta-road-line"></div>
+                <div class="cta-road-car">
+                    <img src="assets/images/car left to right.png" alt="car" class="cta-car-img">
+                </div>
+            </div>
+            <a href="application.html" class="btn mt-48">Start
+                Your Application <svg class="btn-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    aria-hidden="true">
+                    <path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg></a>
+        </div>
+    </section>
+
+    <!-- FOOTER (injected from footer.html) -->
+    <div id="site-footer"></div>
+    <script>includeHTML('site-footer', 'includes/footer.html');</script>
+
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/countries-data.js"></script>
+
+    <!-- resolves ?countryName=<slug> to a country and locks the destination select to
+         it before app.js initializes the country-select components -->
+    <script>
+        (function () {
+            var slug = new URLSearchParams(window.location.search).get('countryName');
+            var match = null;
+            if (slug && typeof COUNTRIES_BY_CONTINENT !== 'undefined') {
+                COUNTRIES_BY_CONTINENT.some(function (group) {
+                    return group.countries.some(function (c) {
+                        if (c.slug === slug) { match = c; return true; }
+                        return false;
+                    });
+                });
+            }
+            var destRoot = document.getElementById('permitDestinationCountrySelect');
+            if (match) {
+                if (destRoot) destRoot.dataset.presetCode = match.code;
+                document.getElementById('permitCountryName').textContent = match.name;
+                document.getElementById('permitBreadcrumb').textContent = match.name;
+                document.getElementById('permitPageTitle').textContent = 'IDP for ' + match.name + ' — iDTA';
+            }
+        })();
+    </script>
+
+    <script src="assets/js/app.js"></script>
+
+    <!-- fills in the "Driving in <Country>" content section — skips to a different
+         message for countries where an IDP currently isn't accepted at all -->
+    <script>
+        (function () {
+            var slug = new URLSearchParams(window.location.search).get('countryName');
+            var match = null;
+            if (slug && typeof COUNTRIES_BY_CONTINENT !== 'undefined') {
+                COUNTRIES_BY_CONTINENT.some(function (group) {
+                    return group.countries.some(function (c) {
+                        if (c.slug === slug) { match = c; return true; }
+                        return false;
+                    });
+                });
+            }
+            if (!match) return;
+
+            var countryEl = document.getElementById('permitAboutCountry');
+            var bodyEl = document.getElementById('permitAboutBody');
+            var body2El = document.getElementById('permitAboutBody2');
+            if (!countryEl || !bodyEl || !body2El) return;
+            countryEl.textContent = match.name;
+
+            var info = window.countryAcceptanceInfo ? countryAcceptanceInfo(match.code, match.name) : null;
+            if (info && info.blocked) {
+                bodyEl.textContent = 'Unfortunately, an International Driving Permit is not currently accepted for ' +
+                    'driving in ' + match.name + '. Local authorities require an in-country or converted license ' +
+                    'instead, so an IDP alone will not be enough if you plan to get behind the wheel there.';
+                body2El.textContent = 'If you still plan to drive during your visit, check with local authorities, ' +
+                    'your car rental agency, or your embassy about accepted alternatives before you travel — ' +
+                    'requirements can change, and it is worth confirming close to your travel date.';
+            } else {
+                bodyEl.textContent = 'Planning to drive in ' + match.name + '? Your International Driving Permit ' +
+                    'acts as an official translation of your home license, recognized by local authorities, ' +
+                    'police, and car rental agencies — so you can hit the road with confidence, without any ' +
+                    'language barrier or paperwork surprises.';
+                body2El.textContent = 'Always carry your IDP alongside your original, valid driver’s license ' +
+                    '— it’s a translation and companion document, not a replacement. Rules on required ' +
+                    'validity and accepted formats can vary, so double-check with your rental agency or local ' +
+                    'authorities if you’re unsure before you set off.';
+            }
+        })();
+    </script>
+
+    <script src="assets/js/reveal.js"></script>
+</body>
+
+</html>

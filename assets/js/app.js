@@ -103,134 +103,21 @@ if (navToggle && navLinks) {
     });
 }
 
-var COUNTRIES = [
-    ['AF', "Afghanistan"], ['AL', "Albania"], ['DZ', "Algeria"],
-    ['AS', "American Samoa"], ['AD', "Andorra"], ['AO', "Angola"],
-    ['AI', "Anguilla"], ['AQ', "Antarctica"], ['AG', "Antigua and Barbuda"],
-    ['AR', "Argentina"], ['AM', "Armenia"], ['AW', "Aruba"],
-    ['AU', "Australia"], ['AT', "Austria"], ['AZ', "Azerbaijan"],
-    ['BS', "Bahamas"], ['BH', "Bahrain"], ['BD', "Bangladesh"],
-    ['BB', "Barbados"], ['BY', "Belarus"], ['BE', "Belgium"],
-    ['BZ', "Belize"], ['BJ', "Benin"], ['BM', "Bermuda"],
-    ['BT', "Bhutan"], ['BO', "Bolivia"], ['BQ', "Bonaire, Sint Eustatius and Saba"],
-    ['BA', "Bosnia and Herzegovina"], ['BW', "Botswana"], ['BV', "Bouvet Island"],
-    ['BR', "Brazil"], ['IO', "British Indian Ocean Territory"], ['BN', "Brunei Darussalam"],
-    ['BG', "Bulgaria"], ['BF', "Burkina Faso"], ['BI', "Burundi"],
-    ['CV', "Cabo Verde"], ['KH', "Cambodia"], ['CM', "Cameroon"],
-    ['CA', "Canada"], ['KY', "Cayman Islands"], ['CF', "Central African Republic"],
-    ['TD', "Chad"], ['CL', "Chile"], ['CN', "China"],
-    ['CX', "Christmas Island"], ['CC', "Cocos (Keeling) Islands"], ['CO', "Colombia"],
-    ['KM', "Comoros"], ['CG', "Congo"], ['CD', "Congo, Democratic Republic of the"],
-    ['CK', "Cook Islands"], ['CR', "Costa Rica"], ['HR', "Croatia"],
-    ['CU', "Cuba"], ['CW', "Cura\u00e7ao"], ['CY', "Cyprus"],
-    ['CZ', "Czechia"], ['DK', "Denmark"], ['DJ', "Djibouti"],
-    ['DM', "Dominica"], ['DO', "Dominican Republic"], ['EC', "Ecuador"],
-    ['EG', "Egypt"], ['SV', "El Salvador"], ['GQ', "Equatorial Guinea"],
-    ['ER', "Eritrea"], ['EE', "Estonia"], ['SZ', "Eswatini"],
-    ['ET', "Ethiopia"], ['FK', "Falkland Islands (Malvinas)"], ['FO', "Faroe Islands"],
-    ['FJ', "Fiji"], ['FI', "Finland"], ['FR', "France"],
-    ['GF', "French Guiana"], ['PF', "French Polynesia"], ['TF', "French Southern Territories"],
-    ['GA', "Gabon"], ['GM', "Gambia"], ['GE', "Georgia"],
-    ['DE', "Germany"], ['GH', "Ghana"], ['GI', "Gibraltar"],
-    ['GR', "Greece"], ['GL', "Greenland"], ['GD', "Grenada"],
-    ['GP', "Guadeloupe"], ['GU', "Guam"], ['GT', "Guatemala"],
-    ['GG', "Guernsey"], ['GN', "Guinea"], ['GW', "Guinea-Bissau"],
-    ['GY', "Guyana"], ['HT', "Haiti"], ['HM', "Heard Island and McDonald Islands"],
-    ['VA', "Holy See"], ['HN', "Honduras"], ['HK', "Hong Kong"],
-    ['HU', "Hungary"], ['IS', "Iceland"], ['IN', "India"],
-    ['ID', "Indonesia"], ['IR', "Iran"], ['IQ', "Iraq"],
-    ['IE', "Ireland"], ['IM', "Isle of Man"], ['IL', "Israel"],
-    ['IT', "Italy"], ['JM', "Jamaica"], ['JP', "Japan"],
-    ['JE', "Jersey"], ['JO', "Jordan"], ['KZ', "Kazakhstan"],
-    ['KE', "Kenya"], ['KI', "Kiribati"], ['KP', "Korea, Democratic People's Republic of"],
-    ['KR', "Korea, Republic of Korea"], ['KW', "Kuwait"], ['KG', "Kyrgyzstan"],
-    ['LA', "Lao People's Democratic Republic"], ['LV', "Latvia"], ['LB', "Lebanon"],
-    ['LS', "Lesotho"], ['LR', "Liberia"], ['LY', "Libya"],
-    ['LI', "Liechtenstein"], ['LT', "Lithuania"], ['LU', "Luxembourg"],
-    ['MO', "Macao"], ['MG', "Madagascar"], ['MW', "Malawi"],
-    ['MY', "Malaysia"], ['MV', "Maldives"], ['ML', "Mali"],
-    ['MT', "Malta"], ['MH', "Marshall Islands"], ['MQ', "Martinique"],
-    ['MR', "Mauritania"], ['MU', "Mauritius"], ['YT', "Mayotte"],
-    ['MX', "Mexico"], ['FM', "Micronesia"], ['MD', "Moldova, Republic of"],
-    ['MC', "Monaco"], ['MN', "Mongolia"], ['ME', "Montenegro"],
-    ['MS', "Montserrat"], ['MA', "Morocco"], ['MZ', "Mozambique"],
-    ['MM', "Myanmar"], ['NA', "Namibia"], ['NR', "Nauru"],
-    ['NP', "Nepal"], ['NL', "Netherlands"], ['NC', "New Caledonia"],
-    ['NZ', "New Zealand"], ['NI', "Nicaragua"], ['NE', "Niger"],
-    ['NG', "Nigeria"], ['NU', "Niue"], ['NF', "Norfolk Island"],
-    ['MP', "Northern Mariana Islands"], ['NO', "Norway"], ['OM', "Oman"],
-    ['PK', "Pakistan"], ['PW', "Palau"], ['PS', "Palestine, State of"],
-    ['PA', "Panama"], ['PG', "Papua New Guinea"], ['PY', "Paraguay"],
-    ['PE', "Peru"], ['PH', "Philippines"], ['PN', "Pitcairn"],
-    ['PL', "Poland"], ['PT', "Portugal"], ['PR', "Puerto Rico"],
-    ['QA', "Qatar"], ['RO', "Romania"], ['RU', "Russian Federation"],
-    ['RW', "Rwanda"], ['RE', "R\u00e9union"], ['BL', "Saint Barth\u00e9lemy"],
-    ['KN', "Saint Kitts and Nevis"], ['LC', "Saint Lucia"], ['MF', "Saint Martin (French part)"],
-    ['PM', "Saint Pierre and Miquelon"], ['VC', "Saint Vincent and the Grenadines"], ['WS', "Samoa"],
-    ['SM', "San Marino"], ['ST', "Sao Tome and Principe"], ['SA', "Saudi Arabia"],
-    ['SN', "Senegal"], ['RS', "Serbia"], ['SC', "Seychelles"],
-    ['SL', "Sierra Leone"], ['SG', "Singapore"], ['SX', "Sint Maarten (Dutch part)"],
-    ['SK', "Slovakia"], ['SI', "Slovenia"], ['SB', "Solomon Islands"],
-    ['SO', "Somalia"], ['ZA', "South Africa"], ['GS', "South Georgia and the South Sandwich Islands"],
-    ['SS', "South Sudan"], ['ES', "Spain"], ['LK', "Sri Lanka"],
-    ['SD', "Sudan"], ['SR', "Suriname"], ['SJ', "Svalbard and Jan Mayen"],
-    ['SE', "Sweden"], ['CH', "Switzerland"], ['SY', "Syrian Arab Republic"],
-    ['TW', "Taiwan"], ['TJ', "Tajikistan"], ['TZ', "Tanzania, United Republic of"],
-    ['TH', "Thailand"], ['TL', "Timor-Leste"], ['TG', "Togo"],
-    ['TK', "Tokelau"], ['TO', "Tonga"], ['TT', "Trinidad and Tobago"],
-    ['TN', "Tunisia"], ['TR', "Turkey"], ['TM', "Turkmenistan"],
-    ['TC', "Turks and Caicos Islands"], ['TV', "Tuvalu"], ['UG', "Uganda"],
-    ['UA', "Ukraine"], ['AE', "United Arab Emirates"], ['GB', "United Kingdom"],
-    ['US', "United States"], ['UM', "United States Minor Outlying Islands"], ['VI', "United States Virgin Islands"],
-    ['UY', "Uruguay"], ['UZ', "Uzbekistan"], ['VU', "Vanuatu"],
-    ['VE', "Venezuela"], ['VN', "Viet Nam"], ['WF', "Wallis and Futuna"],
-    ['EH', "Western Sahara"], ['YE', "Yemen"], ['ZM', "Zambia"],
-    ['ZW', "Zimbabwe"]
-].map(function (c) { return { code: c[0], name: c[1] }; }).sort(function (a, b) { return a.name.localeCompare(b.name); });
+// flattened once from the single source of truth in countries-data.js (loaded
+// before this script on every page) — code, name, and dial code all live in one
+// place there, instead of being duplicated across separate arrays here
+var ALL_COUNTRIES = COUNTRIES_BY_CONTINENT.reduce(function (acc, group) {
+    return acc.concat(group.countries);
+}, []);
 
-var DIAL_CODES = {
-    'AF': '93', 'AL': '355', 'DZ': '213', 'AS': '1684', 'AD': '376', 'AO': '244',
-    'AI': '1264', 'AQ': '672', 'AG': '1268', 'AR': '54', 'AM': '374', 'AW': '297',
-    'AU': '61', 'AT': '43', 'AZ': '994', 'BS': '1242', 'BH': '973', 'BD': '880',
-    'BB': '1246', 'BY': '375', 'BE': '32', 'BZ': '501', 'BJ': '229', 'BM': '1441',
-    'BT': '975', 'BO': '591', 'BQ': '599', 'BA': '387', 'BW': '267', 'BV': '47',
-    'BR': '55', 'IO': '246', 'BN': '673', 'BG': '359', 'BF': '226', 'BI': '257',
-    'CV': '238', 'KH': '855', 'CM': '237', 'CA': '1', 'KY': '1345', 'CF': '236',
-    'TD': '235', 'CL': '56', 'CN': '86', 'CX': '61', 'CC': '61', 'CO': '57',
-    'KM': '269', 'CG': '242', 'CD': '243', 'CK': '682', 'CR': '506', 'HR': '385',
-    'CU': '53', 'CW': '599', 'CY': '357', 'CZ': '420', 'DK': '45', 'DJ': '253',
-    'DM': '1767', 'DO': '1809', 'EC': '593', 'EG': '20', 'SV': '503', 'GQ': '240',
-    'ER': '291', 'EE': '372', 'SZ': '268', 'ET': '251', 'FK': '500', 'FO': '298',
-    'FJ': '679', 'FI': '358', 'FR': '33', 'GF': '594', 'PF': '689', 'TF': '262',
-    'GA': '241', 'GM': '220', 'GE': '995', 'DE': '49', 'GH': '233', 'GI': '350',
-    'GR': '30', 'GL': '299', 'GD': '1473', 'GP': '590', 'GU': '1671', 'GT': '502',
-    'GG': '44', 'GN': '224', 'GW': '245', 'GY': '592', 'HT': '509', 'HM': '672',
-    'VA': '379', 'HN': '504', 'HK': '852', 'HU': '36', 'IS': '354', 'IN': '91',
-    'ID': '62', 'IR': '98', 'IQ': '964', 'IE': '353', 'IM': '44', 'IL': '972',
-    'IT': '39', 'JM': '1876', 'JP': '81', 'JE': '44', 'JO': '962', 'KZ': '7',
-    'KE': '254', 'KI': '686', 'KP': '850', 'KR': '82', 'KW': '965', 'KG': '996',
-    'LA': '856', 'LV': '371', 'LB': '961', 'LS': '266', 'LR': '231', 'LY': '218',
-    'LI': '423', 'LT': '370', 'LU': '352', 'MO': '853', 'MG': '261', 'MW': '265',
-    'MY': '60', 'MV': '960', 'ML': '223', 'MT': '356', 'MH': '692', 'MQ': '596',
-    'MR': '222', 'MU': '230', 'YT': '262', 'MX': '52', 'FM': '691', 'MD': '373',
-    'MC': '377', 'MN': '976', 'ME': '382', 'MS': '1664', 'MA': '212', 'MZ': '258',
-    'MM': '95', 'NA': '264', 'NR': '674', 'NP': '977', 'NL': '31', 'NC': '687',
-    'NZ': '64', 'NI': '505', 'NE': '227', 'NG': '234', 'NU': '683', 'NF': '672',
-    'MP': '1670', 'NO': '47', 'OM': '968', 'PK': '92', 'PW': '680', 'PS': '970',
-    'PA': '507', 'PG': '675', 'PY': '595', 'PE': '51', 'PH': '63', 'PN': '64',
-    'PL': '48', 'PT': '351', 'PR': '1787', 'QA': '974', 'RO': '40', 'RU': '7',
-    'RW': '250', 'RE': '262', 'BL': '590', 'KN': '1869', 'LC': '1758', 'MF': '590',
-    'PM': '508', 'VC': '1784', 'WS': '685', 'SM': '378', 'ST': '239', 'SA': '966',
-    'SN': '221', 'RS': '381', 'SC': '248', 'SL': '232', 'SG': '65', 'SX': '1721',
-    'SK': '421', 'SI': '386', 'SB': '677', 'SO': '252', 'ZA': '27', 'GS': '500',
-    'SS': '211', 'ES': '34', 'LK': '94', 'SD': '249', 'SR': '597', 'SJ': '47',
-    'SE': '46', 'CH': '41', 'SY': '963', 'TW': '886', 'TJ': '992', 'TZ': '255',
-    'TH': '66', 'TL': '670', 'TG': '228', 'TK': '690', 'TO': '676', 'TT': '1868',
-    'TN': '216', 'TR': '90', 'TM': '993', 'TC': '1649', 'TV': '688', 'UG': '256',
-    'UA': '380', 'AE': '971', 'GB': '44', 'US': '1', 'UM': '1', 'VI': '1340',
-    'UY': '598', 'UZ': '998', 'VU': '678', 'VE': '58', 'VN': '84', 'WF': '681',
-    'EH': '212', 'YE': '967', 'ZM': '260', 'ZW': '263'
-};
+var COUNTRIES = ALL_COUNTRIES
+    .map(function (c) { return { code: c.code, name: c.name }; })
+    .sort(function (a, b) { return a.name.localeCompare(b.name); });
+
+var DIAL_CODES = ALL_COUNTRIES.reduce(function (acc, c) {
+    acc[c.code] = c.dial;
+    return acc;
+}, {});
 
 var countryInfo = {
 	'th': ['Thailand', 'Our International Driving Permit works in <span>Thailand</span>. The accepted format is 1 year valid Booklet along with a valid driver’s license. You can apply for Printed IDP with 1 year validity. A digital IDP copy is not recognized in Thailand.'],
@@ -457,6 +344,13 @@ function initCountrySelect(root) {
         });
     }
 
+    // opt-in (via data-preset-code, set by a page-specific inline script before this
+    // runs) — used by check-permit.html to lock the destination to the country in the URL
+    if (root.dataset.presetCode) {
+        var presetCountry = COUNTRIES.filter(function (c) { return c.code === root.dataset.presetCode; })[0];
+        if (presetCountry) selectCountry(presetCountry, true);
+    }
+
     // opt-in (via data-auto-detect="true") auto-fill from the visitor's location —
     // used for "license issued in" fields, never for destination/birth/billing fields
     if (root.dataset.autoDetect === 'true') {
@@ -548,13 +442,18 @@ function initDestinationCountryAlert(destRootId, alertId, blockedSelectors) {
 
 initDestinationCountryAlert('heroDestinationCountrySelect', 'heroDestinationAlert', ['#heroCountryForm button[type="submit"]']);
 initDestinationCountryAlert('appDestinationCountry', 'appDestinationAlert', ['.form-step[data-step-panel="1"] .step-next']);
+initDestinationCountryAlert('countriesDestinationCountrySelect', 'countriesDestinationAlert', ['#countriesCountryForm button[type="submit"]']);
+initDestinationCountryAlert('permitDestinationCountrySelect', 'permitDestinationAlert', ['#permitCountryForm button[type="submit"]']);
 
-var heroCountryForm = document.getElementById('heroCountryForm');
-if (heroCountryForm) {
-    heroCountryForm.addEventListener('submit', function (e) {
+// wires a "where are you going" (+ optional "license issued in") form so submitting
+// it forwards the selections to application.html as query params
+function wireCountryForm(formId, destRootId, licenseRootId) {
+    var form = document.getElementById(formId);
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
-        var licenseRoot = document.getElementById('heroLicenseCountrySelect');
-        var destRoot = document.getElementById('heroDestinationCountrySelect');
+        var licenseRoot = licenseRootId ? document.getElementById(licenseRootId) : null;
+        var destRoot = document.getElementById(destRootId);
         var params = new URLSearchParams();
         if (licenseRoot && licenseRoot.dataset.selectedCode) params.set('license_country', licenseRoot.dataset.selectedCode);
         if (destRoot && destRoot.dataset.selectedCode) params.set('destination_country', destRoot.dataset.selectedCode);
@@ -562,6 +461,10 @@ if (heroCountryForm) {
         window.location.href = 'application.html' + (query ? '?' + query : '');
     });
 }
+
+wireCountryForm('heroCountryForm', 'heroDestinationCountrySelect', 'heroLicenseCountrySelect');
+wireCountryForm('countriesCountryForm', 'countriesDestinationCountrySelect', null);
+wireCountryForm('permitCountryForm', 'permitDestinationCountrySelect', 'permitLicenseCountrySelect');
 
 var CURRENCIES = [
     { code: 'GBP', name: 'British Pound', country: 'GB' },
@@ -873,15 +776,36 @@ function reviewCardHTML(r) {
         '</div>';
 }
 
+var ARROW_ICON_LEFT = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+    '<path d="M20 12H4m0 0 6-6m-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>';
+var ARROW_ICON_RIGHT = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+    '<path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>';
+
 function renderReviews() {
     var grid = document.getElementById('reviewsGrid');
     if (!grid) return;
 
-    var columnCount = window.matchMedia('(max-width: 640px)').matches ? 1 :
-        window.matchMedia('(max-width: 1024px)').matches ? 2 : 3;
+    var isMobile = window.matchMedia('(max-width: 640px)').matches;
+    var columnCount = isMobile ? 1 : window.matchMedia('(max-width: 1024px)').matches ? 2 : 3;
+    var mode = isMobile ? 'carousel' : 'columns-' + columnCount;
 
-    if (grid.dataset.columns === String(columnCount)) return;
-    grid.dataset.columns = String(columnCount);
+    if (grid.dataset.mode === mode) return;
+    grid.dataset.mode = mode;
+
+    // on mobile there's no room for 3 auto-scrolling columns side by side, so
+    // swap the passive ticker for a swipeable, arrow-navigable single-card carousel
+    if (isMobile) {
+        grid.innerHTML =
+            '<div class="products-row reviews-carousel">' +
+            '<button type="button" class="arrow-btn" data-dir="-1" aria-label="Previous review">' + ARROW_ICON_LEFT + '</button>' +
+            '<div class="products-viewport"><div class="products-track">' +
+            REVIEWS.map(reviewCardHTML).join('') +
+            '</div></div>' +
+            '<button type="button" class="arrow-btn" data-dir="1" aria-label="Next review">' + ARROW_ICON_RIGHT + '</button>' +
+            '</div>';
+        initProductSlider(grid.querySelector('.reviews-carousel'));
+        return;
+    }
 
     var columns = [];
     for (var i = 0; i < columnCount; i++) columns.push([]);
