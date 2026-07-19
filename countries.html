@@ -75,15 +75,17 @@
             <p class="lead browse-countries-lead text-center">Explore IDP requirements for 190+ destinations,
                 organized by continent — pick a country to see exactly what's accepted.</p>
 
-            <div class="country-search-box">
-                <span class="country-search-box-icon" aria-hidden="true">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" />
-                        <path d="m21 21-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                    </svg>
-                </span>
-                <input type="text" id="countrySearchInput" class="country-search-input-lg"
-                    placeholder="Search all countries…" autocomplete="off">
+            <div class="product-search-wrap">
+                <div class="product-search">
+                    <input type="search" id="countrySearchInput" class="product-search-input"
+                        placeholder="Search all countries…" aria-label="Search all countries" autocomplete="off">
+                    <button type="button" class="product-search-btn" aria-label="Search">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+                            <path d="m21 21-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <div id="continentBrowse">

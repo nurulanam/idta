@@ -83,13 +83,24 @@ document.querySelectorAll('.js-start-application').forEach(function (link) {
 
 document.querySelectorAll('.faq-item').forEach(function (item) {
     var toggle = item.querySelector('.faq-toggle');
+    var answer = item.querySelector('.faq-answer');
+
+    // an item can start pre-opened via markup (class="faq-item open") with no
+    // click ever firing, so it needs its exact-height inline style set up front
+    if (item.classList.contains('open')) answer.style.maxHeight = answer.scrollHeight + 'px';
+
     toggle.addEventListener('click', function () {
         var opening = !item.classList.contains('open');
         document.querySelectorAll('.faq-item.open').forEach(function (openItem) {
             openItem.classList.remove('open');
+            openItem.querySelector('.faq-answer').style.maxHeight = '';
         });
         if (opening) {
             item.classList.add('open');
+            // an exact pixel target (rather than one flat max-height for every
+            // answer) keeps the transition's speed proportional to how far it
+            // actually has to travel, instead of snapping open/shut
+            answer.style.maxHeight = answer.scrollHeight + 'px';
         }
     });
 });
@@ -102,6 +113,9 @@ if (navToggle && navLinks) {
         navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
 }
+
+var footerYearEl = document.getElementById('footerYear');
+if (footerYearEl) footerYearEl.textContent = new Date().getFullYear();
 
 // flattened once from the single source of truth in countries-data.js (loaded
 // before this script on every page) — code, name, and dial code all live in one
