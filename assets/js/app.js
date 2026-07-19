@@ -81,6 +81,24 @@ document.querySelectorAll('.js-start-application').forEach(function (link) {
     });
 });
 
+// mobile-only package switcher above .pricing-grid — desktop always shows
+// both cards, so these tabs stay hidden there and this just no-ops
+document.querySelectorAll('.pricing-package-tabs').forEach(function (tabs) {
+    var grid = tabs.nextElementSibling;
+    if (!grid) return;
+    var buttons = tabs.querySelectorAll('.pricing-package-tab');
+    var cards = grid.querySelectorAll('.pricing-card');
+    buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            buttons.forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            cards.forEach(function (card) {
+                card.classList.toggle('pkg-hidden', card.dataset.package !== btn.dataset.packageTab);
+            });
+        });
+    });
+});
+
 document.querySelectorAll('.faq-item').forEach(function (item) {
     var toggle = item.querySelector('.faq-toggle');
     var answer = item.querySelector('.faq-answer');

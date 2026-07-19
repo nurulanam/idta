@@ -1,4 +1,18 @@
 (function () {
+    // ---------- license check gate (no close option — must answer to proceed) ----------
+    var licenseOverlay = document.getElementById('licenseCheckOverlay');
+    var licenseYesBtn = document.getElementById('licenseCheckYes');
+    var licenseNoBtn = document.getElementById('licenseCheckNo');
+    if (licenseOverlay && licenseYesBtn && licenseNoBtn) {
+        licenseYesBtn.addEventListener('click', function () {
+            licenseOverlay.hidden = true;
+        });
+        licenseNoBtn.addEventListener('click', function () {
+            if (window.history.length > 1) window.history.back();
+            else window.location.href = 'index.html';
+        });
+    }
+
     var steps = document.querySelectorAll('.form-step');
     var stepItems = document.querySelectorAll('.step-item');
     var connectors = document.querySelectorAll('.step-connector');
@@ -808,9 +822,11 @@
     if (durationParam) {
         var tab = document.querySelector('.plan-tab[data-plan="' + durationParam + '"]');
         if (tab) {
-            document.querySelectorAll('.plan-tab').forEach(function (b) { b.classList.remove('active'); });
-            tab.classList.add('active');
-            if (window.applyPlanDuration) window.applyPlanDuration(durationParam);
+            // a real click (rather than manually toggling the active class) also
+            // runs app.js's own handler that slides the tab-indicator pill into
+            // place, so the highlight doesn't stay stuck on the markup's default tab
+            if (!tab.classList.contains('active')) tab.click();
+            else if (window.applyPlanDuration) window.applyPlanDuration(durationParam);
         }
     } else {
         // no URL override — sync prices to whichever tab is active by default

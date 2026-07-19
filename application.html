@@ -12,6 +12,19 @@
 
 <body>
 
+    <!-- LICENSE CHECK GATE (no close option — must answer to proceed) -->
+    <div class="license-check-overlay" id="licenseCheckOverlay">
+        <div class="license-check-modal">
+            <h2 class="license-check-title">Do you have a valid driving license?</h2>
+            <p class="license-check-desc">An International Driving Permit is only valid alongside your existing
+                driving license — you'll need to bring both when driving abroad.</p>
+            <div class="license-check-actions">
+                <button type="button" class="btn btn-block" id="licenseCheckYes">Yes, I have one</button>
+                <button type="button" class="btn-outline btn-block" id="licenseCheckNo">No, I don't</button>
+            </div>
+        </div>
+    </div>
+
     <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
     <div id="site-header"></div>
     <script>includeHTML('site-header', 'includes/header.html');</script>

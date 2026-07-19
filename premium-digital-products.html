@@ -15,24 +15,26 @@
     <div id="site-header"></div>
     <script>includeHTML('site-header', 'includes/header.html');</script>
 
-    <!-- SECTION 1: PREMIUM DIGITAL PRODUCTS (loaded live from WooCommerce) -->
-    <section class="premium-products-section">
+    <!-- PAGE HEADER -->
+    <section class="page-header">
         <div class="container">
-            <h2 class="h2-md text-center">Premium Digital Products</h2>
-            <div class="product-search-wrap">
-                <div class="product-search">
-                    <input type="search" class="product-search-input" placeholder="Search digital products…"
-                        aria-label="Search digital products">
-                    <button type="button" class="product-search-btn" aria-label="Search">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
-                            <path d="m21 21-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                        </svg>
-                    </button>
-                </div>
+            <h1 class="h2-lg">Premium Digital Products</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="breadcrumb-sep">/</span>
+                <span class="breadcrumb-current">Premium Digital Products</span>
             </div>
+            <p class="lead page-header-lead">Guides, checklists, and country driving kits to help you travel with
+                total confidence.</p>
+        </div>
+    </section>
+
+    <!-- SECTION 1: PREMIUM DIGITAL PRODUCTS (loaded live from WooCommerce) -->
+    <section class="premium-products-section premium-products-section-guides">
+        <div class="container">
+            <h2 class="h2-md text-center">Guides & Checklists</h2>
             <p class="premium-products-status text-center mt-22" id="premiumProductsStatus" hidden></p>
-            <div class="product-grid" id="premiumProductsGrid"></div>
+            <div class="product-grid mt-44" id="premiumProductsGrid"></div>
         </div>
     </section>
 

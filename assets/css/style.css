@@ -1360,6 +1360,12 @@ img {
     margin-top: 44px;
 }
 
+/* mobile shows its own CTA beneath the step cards instead of the one next
+   to the heading, which is too far from the cards on a stacked layout */
+.steps-cta-mobile {
+    display: none;
+}
+
 .step-card {
     border: 1px solid var(--border);
     border-radius: 18px;
@@ -1451,6 +1457,12 @@ img {
     grid-template-columns: 1fr 1fr;
     gap: 36px;
     margin-top: 56px;
+}
+
+/* mobile-only package switcher — hidden on desktop, where both cards show
+   side by side and there's nothing to switch between */
+.pricing-package-tabs {
+    display: none;
 }
 
 .pricing-card {
@@ -2157,7 +2169,15 @@ img {
     }
 
     .badges-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .badge-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
     }
 
     .products-section,
@@ -2183,13 +2203,51 @@ img {
     }
 
     .steps-grid {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         align-items: stretch;
-        gap: 26px;
+        gap: 16px;
     }
 
     .steps-col {
         display: contents;
+    }
+
+    .step-card {
+        padding: 22px 18px;
+        height: 100%;
+    }
+
+    .step-title {
+        font-size: 18px;
+    }
+
+    .step-desc {
+        font-size: 14px;
+    }
+
+    .why-title {
+        font-size: 18px;
+    }
+
+    .why-desc {
+        font-size: 14px;
+    }
+
+    .step-badge {
+        top: 16px;
+        right: 16px;
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+
+    .steps-cta-desktop {
+        display: none;
+    }
+
+    .steps-cta-mobile {
+        display: block;
+        margin-top: 30px;
     }
 
     .steps-col-offset {
@@ -2213,7 +2271,53 @@ img {
     }
 
     .pricing-tabs {
-        flex-direction: column;
+        flex-direction: row;
+    }
+
+    .pricing-tabs .plan-tab {
+        padding: 10px 6px;
+    }
+
+    .pricing-tabs .plan-price {
+        font-size: 13px;
+    }
+
+    .pricing-tabs .plan-sub {
+        font-size: 10px;
+        margin-top: 2px;
+    }
+
+    .pricing-package-tabs {
+        display: flex;
+        gap: 10px;
+        margin-top: 30px;
+    }
+
+    .pricing-package-tab {
+        flex: 1;
+        border: 1px solid var(--border-light);
+        border-radius: 12px;
+        background: var(--white);
+        color: var(--ink);
+        font-size: 14px;
+        font-weight: 600;
+        padding: 12px 10px;
+        cursor: pointer;
+        transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+    }
+
+    .pricing-package-tab.active {
+        background: var(--olive);
+        border-color: var(--olive);
+        color: var(--white);
+    }
+
+    .pricing-grid {
+        margin-top: 20px;
+    }
+
+    .pricing-card.pkg-hidden {
+        display: none;
     }
 
     .pricing-card {
@@ -2221,8 +2325,14 @@ img {
         padding: 34px 28px;
     }
 
+    .pricing-card .card-thumb {
+        order: -1;
+        align-self: center;
+    }
+
     .why-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
     }
 
     .flags-grid {
@@ -2430,6 +2540,12 @@ img {
 
 .premium-products-section.bg-soft {
     background: var(--bg-soft);
+}
+
+/* visible breathing room before the differently-shaded "Popular Country
+   Driving Kits" section, instead of the two backgrounds touching directly */
+.premium-products-section-guides {
+    padding-bottom: 120px;
 }
 
 .premium-products-section .product-card {
@@ -3862,6 +3978,51 @@ img {
     .pricing-note-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* ---------- license check gate (application page, on load) ---------- */
+.license-check-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 20, 15, 0.72);
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.license-check-overlay[hidden] {
+    display: none;
+}
+
+.license-check-modal {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 40px 36px;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 30px 70px rgba(var(--dark-shadow-rgb), 0.3);
+}
+
+.license-check-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.license-check-desc {
+    font-size: 15px;
+    color: var(--muted-2);
+    line-height: 1.55;
+    margin-bottom: 28px;
+}
+
+.license-check-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 /* ---------- image editor (crop / rotate / zoom) ---------- */
