@@ -2766,20 +2766,30 @@ img {
     line-height: 1.2;
 }
 
+/* wraps the (optional) struck-through regular price + the current price so
+   the two stay on one line and share a single margin-top, instead of the
+   regular price (inserted before .pricing-price by pricing-live.js) sitting
+   outside any shared box and throwing off their alignment */
+.pricing-price-group {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: nowrap;
+    gap: 10px;
+}
+
 .pricing-price {
-    display: inline-block;
     font-size: 34px;
     font-weight: 700;
     color: var(--olive);
+    white-space: nowrap;
 }
 
 .pricing-price-regular {
-    display: inline-block;
     font-size: 20px;
     font-weight: 600;
     color: var(--muted-3);
     text-decoration: line-through;
-    margin-right: 10px;
+    white-space: nowrap;
 }
 
 .pricing-price-regular[hidden] {
