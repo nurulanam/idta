@@ -149,7 +149,7 @@
 }
 
 :root {
-    --olive: #7d8011;
+    --olive: #6b6e0e;
     --olive-dark: #5f6608;
     --olive-light: #e7e7d3;
     --olive-light-2: #fbfbf6;
@@ -157,7 +157,7 @@
     --text: #2a2a24;
     --muted: #3a3a33;
     --muted-2: #4a4a42;
-    --muted-3: #8a8a82;
+    --muted-3: #74746c;
     --muted-4: #8a8a7c;
     --muted-5: #6b6b60;
     --border: #ececec;
@@ -182,7 +182,7 @@
     --muted-avatar: #c9c9ae;
     --muted-name: #9a9a90;
     --muted-loc: #b5b5aa;
-    --olive-rgb: 125, 128, 17;
+    --olive-rgb: 107, 110, 14;
     --dark-shadow-rgb: 20, 20, 15;
     --olive-border-soft: rgba(140, 141, 0, 0.2);
 }
@@ -446,6 +446,24 @@ img {
 
 .site-header-bar.is-stuck {
     box-shadow: 0 4px 16px rgba(var(--dark-shadow-rgb), 0.08);
+}
+
+/* header/footer arrive via async include — reserve the nav's exact height on
+   the empty placeholder so the page doesn't shift when it's injected */
+#site-header:empty {
+    min-height: 92px;
+}
+
+@media (max-width: 1024px) {
+    #site-header:empty {
+        min-height: 88px;
+    }
+}
+
+@media (max-width: 640px) {
+    #site-header:empty {
+        min-height: 80px;
+    }
 }
 
 .nav-bar {
@@ -832,6 +850,10 @@ img {
     filter: blur(90px);
     z-index: 0;
     pointer-events: none;
+    /* own compositor layer: the blur is rasterized once and the float
+       animation is pure compositing, instead of re-rasterizing a 90px
+       blur on the main thread every frame */
+    will-change: transform;
 }
 
 /* glows behind the hero-form card (right column of the grid) */
@@ -2805,7 +2827,8 @@ img {
 
 .plan-sub {
     font-size: 15px;
-    opacity: 0.85;
+    /* 0.9 keeps white-on-olive above the 4.5:1 AA contrast threshold */
+    opacity: 0.9;
     margin-top: 4px;
 }
 
@@ -2858,8 +2881,8 @@ img {
 
 /* ---------- hero ---------- */
 .hero-car-img {
-    width: 50px;
-    height: 110px;
+    width: 46px;
+    height: 99px;
     border-radius: 10px;
 }
 

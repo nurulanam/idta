@@ -20,16 +20,17 @@
         });
     }
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'env.txt?_=' + Date.now(), false);
-    try {
-        xhr.send(null);
-        if (xhr.status === 200 || xhr.status === 0) {
-            parseEnv(xhr.responseText);
-        } else {
-            console.warn('env.js: "env.txt" returned status ' + xhr.status + ' — window.ENV will be empty (defaults to production behaviour).');
-        }
-    } catch (e) {
-        console.warn('env.js: could not load "env.txt" (served over http/https?) — window.ENV will be empty.', e);
-    }
+    // async fetch instead of the old blocking XHR; loadScriptsAfterIncludes
+    // awaits this promise before running the next script in the chain, so
+    // window.ENV is always fully populated for every consumer. cache: no-store
+    // keeps the fresh-config-per-load behaviour the old ?_=Date.now() gave.
+    window.__pendingScriptReady = fetch('env.txt', { cache: 'no-store' })
+        .then(function (res) {
+            if (!res.ok) throw new Error('status ' + res.status);
+            return res.text();
+        })
+        .then(parseEnv)
+        .catch(function (e) {
+            console.warn('env.js: could not load "env.txt" — window.ENV will be empty (defaults to production behaviour).', e);
+        });
 })();

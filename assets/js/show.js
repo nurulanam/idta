@@ -24,7 +24,7 @@
         if (!src) return '';
         var sizeKB = meta.size ? Math.round(meta.size / 1024) + ' KB' : '';
         var name = meta.name || '';
-        return '<div class="review-thumb"><img src="' + src + '" alt="' + escapeHTML(label) + '">' +
+        return '<div class="review-thumb"><img src="' + escapeHTML(src) + '" alt="' + escapeHTML(label) + '">' +
             '<span>' + escapeHTML(label) + (name ? '<br>' + escapeHTML(name) + (sizeKB ? ' (' + sizeKB + ')' : '') : '') + '</span></div>';
     }
 

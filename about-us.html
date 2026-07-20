@@ -4,9 +4,63 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="iDTA helps drivers cross borders with confidence — fast, verified International Driving Permits and expert travel driving resources.">
     <title>About Us — iDTA</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="preload" href="assets/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-500-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/js/include.js"></script>
+    <!-- inlined from assets/js/include.js (source of truth) — saves a render-blocking
+         request on the critical path; re-inline into every page if that file changes -->
+    <script>
+        var __pendingIncludes = [];
+
+        function includeHTML(placeholderId, url) {
+            var el = document.getElementById(placeholderId);
+            if (!el) return;
+            var p = fetch(url, { priority: 'low' })
+                .then(function (res) {
+                    if (!res.ok) throw new Error('status ' + res.status);
+                    return res.text();
+                })
+                .then(function (html) {
+                    var doc = new DOMParser().parseFromString(html, 'text/html');
+                    var injected = doc.body.querySelectorAll('script');
+                    for (var i = 0; i < injected.length; i++) injected[i].remove();
+                    el.outerHTML = doc.body.innerHTML;
+                })
+                .catch(function (e) {
+                    console.error('includeHTML: failed to load "' + url + '" — "#' + placeholderId + '" was left empty.', e);
+                });
+            __pendingIncludes.push(p);
+        }
+
+        function loadScriptsAfterIncludes(srcs) {
+            Promise.all(__pendingIncludes).then(function () {
+                return srcs.reduce(function (chain, src) {
+                    return chain.then(function () {
+                        if (typeof src === 'function') { src(); return; }
+                        return new Promise(function (resolve) {
+                            var s = document.createElement('script');
+                            s.src = src;
+                            s.onload = resolve;
+                            s.onerror = function () {
+                                console.error('loadScriptsAfterIncludes: failed to load "' + src + '"');
+                                resolve();
+                            };
+                            document.body.appendChild(s);
+                        }).then(function () {
+                            var ready = window.__pendingScriptReady;
+                            window.__pendingScriptReady = null;
+                            return ready;
+                        });
+                    });
+                }, Promise.resolve());
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -14,6 +68,8 @@
     <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
     <div id="site-header"></div>
     <script>includeHTML('site-header', 'includes/header.html');</script>
+
+    <main>
 
     <!-- PAGE HEADER -->
     <section class="page-header">
@@ -53,7 +109,7 @@
             <div class="why-grid mt-30">
                 <div class="why-card">
                     <div class="why-icon">
-                        <img src="assets/images/Accurate.png" alt="Accurate">
+                        <img loading="lazy" decoding="async" width="61" height="57" src="assets/images/Accurate.png" alt="Accurate">
                     </div>
                     <h3 class="why-title">Accurate</h3>
                     <p class="why-desc">Prepared using internationally recognized and verified driving
@@ -61,7 +117,7 @@
                 </div>
                 <div class="why-card">
                     <div class="why-icon">
-                        <img src="assets/images/Professional.png" alt="Professional">
+                        <img loading="lazy" decoding="async" width="55" height="59" src="assets/images/Professional.png" alt="Professional">
                     </div>
                     <h3 class="why-title">Professional</h3>
                     <p class="why-desc">High-quality, beautifully formatted, and easily printable PDF documents.
@@ -69,7 +125,7 @@
                 </div>
                 <div class="why-card">
                     <div class="why-icon">
-                        <img src="assets/images/Instant Access.png" alt="Instant Access">
+                        <img loading="lazy" decoding="async" width="55" height="53" src="assets/images/Instant Access.png" alt="Instant Access">
                     </div>
                     <h3 class="why-title">Instant Access</h3>
                     <p class="why-desc">No waiting time. Download your resources immediately after a secure
@@ -77,7 +133,7 @@
                 </div>
                 <div class="why-card">
                     <div class="why-icon">
-                        <img src="assets/images/Regular Updates.png" alt="Regular Updates">
+                        <img loading="lazy" decoding="async" width="52" height="48" src="assets/images/Regular Updates.png" alt="Regular Updates">
                     </div>
                     <h3 class="why-title">Regular Updates</h3>
                     <p class="why-desc">Our content is continuously reviewed and updated when regulations change.
@@ -105,16 +161,15 @@
     </section>
 
     <!-- FOOTER (injected from footer.html) -->
+    </main>
+
     <div id="site-footer"></div>
     <script>includeHTML('site-footer', 'includes/footer.html');</script>
 
-    <script src="assets/js/cart.js"></script>
 
-    <script src="assets/js/countries-data.js"></script>
 
-    <script src="assets/js/app.js"></script>
 
-    <script src="assets/js/reveal.js"></script>
+    <script>loadScriptsAfterIncludes(['assets/js/cart.js', 'assets/js/countries-data.js', 'assets/js/app.js', 'assets/js/reveal.js']);</script>
 </body>
 
 </html>

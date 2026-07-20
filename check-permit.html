@@ -4,10 +4,63 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="See whether your IDP is accepted at your destination and start your application in minutes — no paperwork, no embassy visits.">
     <title id="permitPageTitle">Check Your IDP — iDTA</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="preload" href="assets/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-500-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/js/include.js"></script>
-    <script src="assets/js/env.js"></script>
+    <!-- inlined from assets/js/include.js (source of truth) — saves a render-blocking
+         request on the critical path; re-inline into every page if that file changes -->
+    <script>
+        var __pendingIncludes = [];
+
+        function includeHTML(placeholderId, url) {
+            var el = document.getElementById(placeholderId);
+            if (!el) return;
+            var p = fetch(url, { priority: 'low' })
+                .then(function (res) {
+                    if (!res.ok) throw new Error('status ' + res.status);
+                    return res.text();
+                })
+                .then(function (html) {
+                    var doc = new DOMParser().parseFromString(html, 'text/html');
+                    var injected = doc.body.querySelectorAll('script');
+                    for (var i = 0; i < injected.length; i++) injected[i].remove();
+                    el.outerHTML = doc.body.innerHTML;
+                })
+                .catch(function (e) {
+                    console.error('includeHTML: failed to load "' + url + '" — "#' + placeholderId + '" was left empty.', e);
+                });
+            __pendingIncludes.push(p);
+        }
+
+        function loadScriptsAfterIncludes(srcs) {
+            Promise.all(__pendingIncludes).then(function () {
+                return srcs.reduce(function (chain, src) {
+                    return chain.then(function () {
+                        if (typeof src === 'function') { src(); return; }
+                        return new Promise(function (resolve) {
+                            var s = document.createElement('script');
+                            s.src = src;
+                            s.onload = resolve;
+                            s.onerror = function () {
+                                console.error('loadScriptsAfterIncludes: failed to load "' + src + '"');
+                                resolve();
+                            };
+                            document.body.appendChild(s);
+                        }).then(function () {
+                            var ready = window.__pendingScriptReady;
+                            window.__pendingScriptReady = null;
+                            return ready;
+                        });
+                    });
+                }, Promise.resolve());
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -15,6 +68,8 @@
     <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
     <div id="site-header"></div>
     <script>includeHTML('site-header', 'includes/header.html');</script>
+
+    <main>
 
     <!-- PAGE HEADER + APPLICATION FORM -->
     <section class="page-header permit-header">
@@ -112,11 +167,11 @@
                         </svg></button>
                     <div class="products-viewport">
                         <div class="products-track">
-                            <div class="included-slide"><img src="assets/images/print-digital-thumb.png"
+                            <div class="included-slide"><img loading="lazy" decoding="async" width="204" height="153" src="assets/images/print-digital-thumb.png"
                                     alt="Printed IDP booklet"></div>
-                            <div class="included-slide"><img src="assets/images/digital-thumb.png"
+                            <div class="included-slide"><img loading="lazy" decoding="async" width="125" height="233" src="assets/images/digital-thumb.png"
                                     alt="Digital IDP"></div>
-                            <div class="included-slide"><img src="assets/images/car.png"
+                            <div class="included-slide"><img loading="lazy" decoding="async" width="46" height="99" src="assets/images/car.png"
                                     alt="Drive with confidence"></div>
                         </div>
                     </div>
@@ -130,27 +185,27 @@
             <div class="included-copy-col">
                 <h2 class="h2-md">What's Included?</h2>
                 <ul class="included-list">
-                    <li class="included-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>
+                    <li class="included-item"><span><img loading="lazy" decoding="async" width="28" height="28" src="assets/images/icons/check-mark.svg" alt=""></span>
                         Officially formatted IDP booklet, translated into 12 languages</li>
-                    <li class="included-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>
+                    <li class="included-item"><span><img loading="lazy" decoding="async" width="28" height="28" src="assets/images/icons/check-mark.svg" alt=""></span>
                         Digital copy with secure QR verification</li>
-                    <li class="included-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Free
+                    <li class="included-item"><span><img loading="lazy" decoding="async" width="28" height="28" src="assets/images/icons/check-mark.svg" alt=""></span>Free
                         global express shipping</li>
-                    <li class="included-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>24/7
+                    <li class="included-item"><span><img loading="lazy" decoding="async" width="28" height="28" src="assets/images/icons/check-mark.svg" alt=""></span>24/7
                         customer support before and during your trip</li>
                 </ul>
                 <ul class="facility-list">
-                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Lowest
+                    <li class="facility-item"><span><img loading="lazy" decoding="async" width="28" height="28" src="assets/images/icons/check-mark.svg" alt=""></span>Lowest
                         price guarantee</li>
-                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Approved
+                    <li class="facility-item"><span><img loading="lazy" decoding="async" width="28" height="28" src="assets/images/icons/check-mark.svg" alt=""></span>Approved
                         by the UN</li>
-                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Rent cars
+                    <li class="facility-item"><span><img loading="lazy" decoding="async" width="28" height="28" src="assets/images/icons/check-mark.svg" alt=""></span>Rent cars
                         easily</li>
-                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Simple
+                    <li class="facility-item"><span><img loading="lazy" decoding="async" width="28" height="28" src="assets/images/icons/check-mark.svg" alt=""></span>Simple
                         &amp; fast application</li>
-                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Valid
+                    <li class="facility-item"><span><img loading="lazy" decoding="async" width="28" height="28" src="assets/images/icons/check-mark.svg" alt=""></span>Valid
                         from 1 to 3 years</li>
-                    <li class="facility-item"><span><img src="assets/images/icons/check-mark.svg" alt=""></span>Global
+                    <li class="facility-item"><span><img loading="lazy" decoding="async" width="28" height="28" src="assets/images/icons/check-mark.svg" alt=""></span>Global
                         express shipping</li>
                 </ul>
             </div>
@@ -247,7 +302,7 @@
             <div class="cta-road">
                 <div class="cta-road-line"></div>
                 <div class="cta-road-car">
-                    <img src="assets/images/car left to right.png" alt="car" class="cta-car-img">
+                    <img loading="lazy" decoding="async" width="99" height="46" src="assets/images/car left to right.png" alt="car" class="cta-car-img">
                 </div>
             </div>
             <a href="application.html" class="btn mt-48">Start
@@ -260,16 +315,17 @@
     </section>
 
     <!-- FOOTER (injected from footer.html) -->
+    </main>
+
     <div id="site-footer"></div>
     <script>includeHTML('site-footer', 'includes/footer.html');</script>
 
-    <script src="assets/js/cart.js"></script>
-    <script src="assets/js/countries-data.js"></script>
 
     <!-- resolves ?countryName=<slug> to a country and locks the destination select to
-         it before app.js initializes the country-select components -->
+         it before app.js initializes the country-select components — runs inside the
+         loadScriptsAfterIncludes chain, right after countries-data.js -->
     <script>
-        (function () {
+        function permitPresetFromSlug() {
             var slug = new URLSearchParams(window.location.search).get('countryName');
             var match = null;
             if (slug && typeof COUNTRIES_BY_CONTINENT !== 'undefined') {
@@ -287,15 +343,16 @@
                 document.getElementById('permitBreadcrumb').textContent = match.name;
                 document.getElementById('permitPageTitle').textContent = 'IDP for ' + match.name + ' — iDTA';
             }
-        })();
+        }
     </script>
 
-    <script src="assets/js/app.js"></script>
 
     <!-- fills in the "Driving in <Country>" content section — skips to a different
-         message for countries where an IDP currently isn't accepted at all -->
+         message for countries where an IDP currently isn't accepted at all; runs
+         inside the loadScriptsAfterIncludes chain, right after app.js (it needs
+         countryAcceptanceInfo from there) -->
     <script>
-        (function () {
+        function permitFillAboutSection() {
             var slug = new URLSearchParams(window.location.search).get('countryName');
             var match = null;
             if (slug && typeof COUNTRIES_BY_CONTINENT !== 'undefined') {
@@ -332,10 +389,10 @@
                     'validity and accepted formats can vary, so double-check with your rental agency or local ' +
                     'authorities if you’re unsure before you set off.';
             }
-        })();
+        }
     </script>
 
-    <script src="assets/js/reveal.js"></script>
+    <script>loadScriptsAfterIncludes(['assets/js/env.js', 'assets/js/cart.js', 'assets/js/countries-data.js', permitPresetFromSlug, 'assets/js/app.js', permitFillAboutSection, 'assets/js/reveal.js']);</script>
 </body>
 
 </html>

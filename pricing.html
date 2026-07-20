@@ -4,10 +4,63 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Simple, transparent IDP pricing — choose 1, 2, or 3-year validity as a digital-only permit or printed booklet with digital copy. No hidden fees.">
     <title>Pricing — iDTA</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="preload" href="assets/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-500-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/js/include.js"></script>
-    <script src="assets/js/env.js"></script>
+    <!-- inlined from assets/js/include.js (source of truth) — saves a render-blocking
+         request on the critical path; re-inline into every page if that file changes -->
+    <script>
+        var __pendingIncludes = [];
+
+        function includeHTML(placeholderId, url) {
+            var el = document.getElementById(placeholderId);
+            if (!el) return;
+            var p = fetch(url, { priority: 'low' })
+                .then(function (res) {
+                    if (!res.ok) throw new Error('status ' + res.status);
+                    return res.text();
+                })
+                .then(function (html) {
+                    var doc = new DOMParser().parseFromString(html, 'text/html');
+                    var injected = doc.body.querySelectorAll('script');
+                    for (var i = 0; i < injected.length; i++) injected[i].remove();
+                    el.outerHTML = doc.body.innerHTML;
+                })
+                .catch(function (e) {
+                    console.error('includeHTML: failed to load "' + url + '" — "#' + placeholderId + '" was left empty.', e);
+                });
+            __pendingIncludes.push(p);
+        }
+
+        function loadScriptsAfterIncludes(srcs) {
+            Promise.all(__pendingIncludes).then(function () {
+                return srcs.reduce(function (chain, src) {
+                    return chain.then(function () {
+                        if (typeof src === 'function') { src(); return; }
+                        return new Promise(function (resolve) {
+                            var s = document.createElement('script');
+                            s.src = src;
+                            s.onload = resolve;
+                            s.onerror = function () {
+                                console.error('loadScriptsAfterIncludes: failed to load "' + src + '"');
+                                resolve();
+                            };
+                            document.body.appendChild(s);
+                        }).then(function () {
+                            var ready = window.__pendingScriptReady;
+                            window.__pendingScriptReady = null;
+                            return ready;
+                        });
+                    });
+                }, Promise.resolve());
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -15,6 +68,8 @@
     <!-- NAV (injected from header.html, no fetch delay: synchronous include) -->
     <div id="site-header"></div>
     <script>includeHTML('site-header', 'includes/header.html');</script>
+
+    <main>
 
     <!-- PAGE HEADER -->
     <section class="page-header">
@@ -56,9 +111,9 @@
                 <div class="pricing-card featured" data-price-0="$59" data-price-1="$89" data-price-2="$109"
                     data-package="printed">
                     <div class="flex-1">
-                        <h3 class="pricing-title">Printed
+                        <h2 class="pricing-title">Printed
                             Booklet + Digital IDP
-                        </h3>
+                        </h2>
                         <div class="pricing-price mt-18">$59</div>
                         <p class="pricing-desc mt-20">Perfect for last-minute travellers. Get a high-resolution
                             digital copy plus a printed booklet shipped to your address.</p>
@@ -70,14 +125,14 @@
                             </svg></a>
                     </div>
                     <div class="card-thumb card-thumb-wide">
-                        <img src="assets/images/print-digital-thumb.png" alt="Printed booklet and digital IDP">
+                        <img loading="lazy" decoding="async" width="204" height="153" src="assets/images/print-digital-thumb.png" alt="Printed booklet and digital IDP">
                     </div>
                 </div>
                 <div class="pricing-card pkg-hidden" data-price-0="$39" data-price-1="$59" data-price-2="$75"
                     data-package="digital">
                     <div class="flex-1">
-                        <h3 class="pricing-title">Digital IDP
-                            Only</h3>
+                        <h2 class="pricing-title">Digital IDP
+                            Only</h2>
                         <div class="pricing-price mt-18">$39</div>
                         <p class="pricing-desc mt-20">Perfect for last-minute travellers. Get a high-resolution
                             digital copy with QR verification straight to your email.</p>
@@ -89,7 +144,7 @@
                             </svg></a>
                     </div>
                     <div class="card-thumb">
-                        <img src="assets/images/digital-thumb.png" alt="Digital IDP">
+                        <img loading="lazy" decoding="async" width="125" height="233" src="assets/images/digital-thumb.png" alt="Digital IDP">
                     </div>
                 </div>
             </div>
@@ -97,7 +152,7 @@
             <div class="pricing-note-grid">
                 <div class="why-card">
                     <div class="why-icon">
-                        <img src="assets/images/Accurate.png" alt="Accurate">
+                        <img loading="lazy" decoding="async" width="61" height="57" src="assets/images/Accurate.png" alt="Accurate">
                     </div>
                     <h3 class="why-title">No Hidden Fees</h3>
                     <p class="why-desc">The price you see is the price you pay — shipping for printed booklets is
@@ -105,7 +160,7 @@
                 </div>
                 <div class="why-card">
                     <div class="why-icon">
-                        <img src="assets/images/Instant Access.png" alt="Instant Access">
+                        <img loading="lazy" decoding="async" width="55" height="53" src="assets/images/Instant Access.png" alt="Instant Access">
                     </div>
                     <h3 class="why-title">Instant Digital Delivery</h3>
                     <p class="why-desc">Your digital IDP is emailed within minutes of verification, so you're
@@ -113,7 +168,7 @@
                 </div>
                 <div class="why-card">
                     <div class="why-icon">
-                        <img src="assets/images/Regular Updates.png" alt="Refunds">
+                        <img loading="lazy" decoding="async" width="52" height="48" src="assets/images/Regular Updates.png" alt="Refunds">
                     </div>
                     <h3 class="why-title">Money-Back Guarantee</h3>
                     <p class="why-desc">If your application can't be verified, you're covered by our <a
@@ -124,17 +179,15 @@
     </section>
 
     <!-- FOOTER (injected from footer.html) -->
+    </main>
+
     <div id="site-footer"></div>
     <script>includeHTML('site-footer', 'includes/footer.html');</script>
 
-    <script src="assets/js/cart.js"></script>
 
-    <script src="assets/js/countries-data.js"></script>
 
-    <script src="assets/js/app.js"></script>
 
-    <script src="assets/js/reveal.js"></script>
-    <script src="assets/js/pricing-live.js"></script>
+    <script>loadScriptsAfterIncludes(['assets/js/env.js', 'assets/js/cart.js', 'assets/js/countries-data.js', 'assets/js/app.js', 'assets/js/reveal.js', 'assets/js/pricing-live.js']);</script>
 </body>
 
 </html>

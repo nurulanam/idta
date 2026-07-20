@@ -4,10 +4,63 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Get your International Driving Permit online in minutes. Valid in 190+ countries with instant digital delivery, printed booklet shipping, and 24/7 support.">
     <title>iDTA — Drive Anywhere With Confidence</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <link rel="preload" href="assets/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-500-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/js/include.js"></script>
-    <script src="assets/js/env.js"></script>
+    <!-- inlined from assets/js/include.js (source of truth) — saves a render-blocking
+         request on the critical path; re-inline into every page if that file changes -->
+    <script>
+        var __pendingIncludes = [];
+
+        function includeHTML(placeholderId, url) {
+            var el = document.getElementById(placeholderId);
+            if (!el) return;
+            var p = fetch(url, { priority: 'low' })
+                .then(function (res) {
+                    if (!res.ok) throw new Error('status ' + res.status);
+                    return res.text();
+                })
+                .then(function (html) {
+                    var doc = new DOMParser().parseFromString(html, 'text/html');
+                    var injected = doc.body.querySelectorAll('script');
+                    for (var i = 0; i < injected.length; i++) injected[i].remove();
+                    el.outerHTML = doc.body.innerHTML;
+                })
+                .catch(function (e) {
+                    console.error('includeHTML: failed to load "' + url + '" — "#' + placeholderId + '" was left empty.', e);
+                });
+            __pendingIncludes.push(p);
+        }
+
+        function loadScriptsAfterIncludes(srcs) {
+            Promise.all(__pendingIncludes).then(function () {
+                return srcs.reduce(function (chain, src) {
+                    return chain.then(function () {
+                        if (typeof src === 'function') { src(); return; }
+                        return new Promise(function (resolve) {
+                            var s = document.createElement('script');
+                            s.src = src;
+                            s.onload = resolve;
+                            s.onerror = function () {
+                                console.error('loadScriptsAfterIncludes: failed to load "' + src + '"');
+                                resolve();
+                            };
+                            document.body.appendChild(s);
+                        }).then(function () {
+                            var ready = window.__pendingScriptReady;
+                            window.__pendingScriptReady = null;
+                            return ready;
+                        });
+                    });
+                }, Promise.resolve());
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -16,6 +69,8 @@
     <div id="site-header"></div>
     <script>includeHTML('site-header', 'includes/header.html');</script>
 
+    <main>
+
     <!-- HERO -->
     <section class="hero-section">
         <div class="container">
@@ -23,7 +78,7 @@
                 <!-- left copy -->
                 <div class="hero-copy">
                     <div class="hero-trust">
-                        <span><img src="assets/images/icons/trusted by.svg" alt=""></span>
+                        <span><img width="20" height="20" src="assets/images/icons/trusted by.png" alt=""></span>
                         <span class="trust-text">Trusted by <strong class="fw-600">179,000+
                                 Drivers</strong></span>
                     </div>
@@ -32,16 +87,16 @@
                         Everything you need to drive abroad: expert guides, road signs, travel checklists, and
                         multilingual driver's licence translations.</p>
                     <div class="hero-checklist">
-                        <div class="checklist-item"><span><img src="assets/images/icons/check-mark.svg"
+                        <div class="checklist-item"><span><img width="28" height="28" src="assets/images/icons/check-mark.svg"
                                     alt=""></span><span>Delivered
                                 digitally in 5 minutes</span></div>
-                        <div class="checklist-item"><span><img src="assets/images/icons/check-mark.svg"
+                        <div class="checklist-item"><span><img width="28" height="28" src="assets/images/icons/check-mark.svg"
                                     alt=""></span><span>We Ship
                                 Anywhere You Travel</span></div>
-                        <div class="checklist-item"><span><img src="assets/images/icons/check-mark.svg"
+                        <div class="checklist-item"><span><img width="28" height="28" src="assets/images/icons/check-mark.svg"
                                     alt=""></span><span>Valid in
                                 195+ countries</span></div>
-                        <div class="checklist-item"><span><img src="assets/images/icons/check-mark.svg"
+                        <div class="checklist-item"><span><img width="28" height="28" src="assets/images/icons/check-mark.svg"
                                     alt=""></span><span>24/7 live
                                 chat support</span></div>
                     </div>
@@ -56,7 +111,7 @@
                 <div class="hero-road">
                     <div class="hero-road-line"></div>
                     <div class="hero-road-slot">
-                        <img src="assets/images/car.png" class="hero-car-img" alt="top-down car">
+                        <img width="46" height="99" src="assets/images/car.png" class="hero-car-img" alt="top-down car">
                     </div>
                 </div>
                 <!-- form -->
@@ -128,23 +183,23 @@
             <!-- badges -->
             <div class="badges-grid">
                 <div class="badge-card">
-                    <img src="assets/images/icons/150+ Countries Covered.svg" alt="">
+                    <img loading="lazy" decoding="async" width="50" height="52" src="assets/images/icons/150 Countries Covered.png" alt="">
                     <span class="badge-label">150+ Countries Covered</span>
                 </div>
                 <div class="badge-card">
-                    <img src="assets/images/icons/Professional PDF Guides.svg" alt="">
+                    <img loading="lazy" decoding="async" width="44" height="48" src="assets/images/icons/Professional PDF Guides.png" alt="">
                     <span class="badge-label">Professional PDF Guides</span>
                 </div>
                 <div class="badge-card">
-                    <img src="assets/images/icons/International Driving Resources.svg" alt="">
+                    <img loading="lazy" decoding="async" width="49" height="50" src="assets/images/icons/International Driving Resources.png" alt="">
                     <span class="badge-label">International Driving Resources</span>
                 </div>
                 <div class="badge-card">
-                    <img src="assets/images/icons/Instant Download.svg" alt="">
+                    <img loading="lazy" decoding="async" width="43" height="43" src="assets/images/icons/Instant Download.png" alt="">
                     <span class="badge-label">Instant Download</span>
                 </div>
                 <div class="badge-card">
-                    <img src="assets/images/icons/Secure Checkout.svg" alt="">
+                    <img loading="lazy" decoding="async" width="54" height="49" src="assets/images/icons/Secure Checkout.png" alt="">
                     <span class="badge-label">Secure Checkout</span>
                 </div>
             </div>
@@ -175,7 +230,7 @@
                                     data-cart-image="assets/images/Accurate.png">Add to Cart</button>
                             </div>
                             <div class="card-thumb">
-                                <img class="ph-book" src="assets/images/Accurate.png" role="img" aria-label="book cover">
+                                <img loading="lazy" decoding="async" width="61" height="57" class="ph-book" src="assets/images/Accurate.png" role="img" aria-label="book cover">
                             </div>
                         </div>
                         <div class="product-card">
@@ -283,7 +338,7 @@
                     <div class="step-card" data-step="1">
                         <span class="step-badge">Step 1</span>
                         <div class="step-icon">
-                            <img src="assets/images/Choose Country.png" alt="Choose Country">
+                            <img loading="lazy" decoding="async" width="55" height="55" src="assets/images/Choose Country.png" alt="Choose Country">
                         </div>
                         <h3 class="step-title">Choose Country</h3>
                         <p class="step-desc">Select your
@@ -292,7 +347,7 @@
                     <div class="step-card" data-step="3">
                         <span class="step-badge">Step 3</span>
                         <div class="step-icon">
-                            <img src="assets/images/Download.png" alt="Download">
+                            <img loading="lazy" decoding="async" width="48" height="51" src="assets/images/Download.png" alt="Download">
                         </div>
                         <h3 class="step-title">Download</h3>
                         <p class="step-desc">Get instant access
@@ -303,7 +358,7 @@
                     <div class="step-card" data-step="2">
                         <span class="step-badge">Step 2</span>
                         <div class="step-icon">
-                            <img src="assets/images/Purchase.png" alt="Purchase">
+                            <img loading="lazy" decoding="async" width="55" height="55" src="assets/images/Purchase.png" alt="Purchase">
                         </div>
                         <h3 class="step-title">Purchase</h3>
                         <p class="step-desc">Complete safe and
@@ -312,7 +367,7 @@
                     <div class="step-card" data-step="4">
                         <span class="step-badge">Step 4</span>
                         <div class="step-icon">
-                            <img src="assets/images/Drive Safely.png" alt="Drive Safely">
+                            <img loading="lazy" decoding="async" width="48" height="53" src="assets/images/Drive Safely.png" alt="Drive Safely">
                         </div>
                         <h3 class="step-title">Drive Safely</h3>
                         <p class="step-desc">Travel with
@@ -358,9 +413,9 @@
                 <div class="pricing-card featured" data-price-0="$59" data-price-1="$89" data-price-2="$109"
                     data-package="printed">
                     <div class="flex-1">
-                        <h3 class="pricing-title">Printed
+                        <h2 class="pricing-title">Printed
                             Booklet + Digital IDP
-                        </h3>
+                        </h2>
                         <div class="pricing-price mt-18">$59</div>
                         <p class="pricing-desc mt-20">Perfect for
                             last-minute travellers. Get a high-resolution digital copy with QR verification straight
@@ -373,14 +428,14 @@
                             </svg></a>
                     </div>
                     <div class="card-thumb card-thumb-wide">
-                        <img src="assets/images/print-digital-thumb.png" alt="Printed booklet and digital IDP">
+                        <img loading="lazy" decoding="async" width="204" height="153" src="assets/images/print-digital-thumb.png" alt="Printed booklet and digital IDP">
                     </div>
                 </div>
                 <div class="pricing-card pkg-hidden" data-price-0="$39" data-price-1="$59" data-price-2="$75"
                     data-package="digital">
                     <div class="flex-1">
-                        <h3 class="pricing-title">Digital IDP
-                            Only</h3>
+                        <h2 class="pricing-title">Digital IDP
+                            Only</h2>
                         <div class="pricing-price mt-18">$39</div>
                         <p class="pricing-desc mt-20">Perfect for
                             last-minute travellers. Get a high-resolution digital copy with QR verification straight
@@ -393,7 +448,7 @@
                             </svg></a>
                     </div>
                     <div class="card-thumb">
-                        <img src="assets/images/digital-thumb.png" alt="Digital IDP">
+                        <img loading="lazy" decoding="async" width="125" height="233" src="assets/images/digital-thumb.png" alt="Digital IDP">
                     </div>
                 </div>
             </div>
@@ -514,18 +569,15 @@
     <script>includeHTML('cta-guides-slot', 'includes/cta-guides-section.html');</script>
 
     <!-- FOOTER (injected from footer.html) -->
+    </main>
+
     <div id="site-footer"></div>
     <script>includeHTML('site-footer', 'includes/footer.html');</script>
 
-    <script src="assets/js/cart.js"></script>
 
-    <script src="assets/js/countries-data.js"></script>
 
-    <script src="assets/js/app.js"></script>
 
-    <script src="assets/js/reveal.js"></script>
-    <script src="assets/js/pricing-live.js"></script>
-    <script src="assets/js/home-products.js"></script>
+    <script>loadScriptsAfterIncludes(['assets/js/env.js', 'assets/js/cart.js', 'assets/js/countries-data.js', 'assets/js/app.js', 'assets/js/reveal.js', 'assets/js/pricing-live.js', 'assets/js/home-products.js']);</script>
 </body>
 
 </html>
