@@ -93,6 +93,21 @@
             <!-- static skeletons reserve the grid's height before JS takes over,
                  so the async product load doesn't shift the layout -->
             <div class="product-grid mt-44" id="premiumProductsGrid">
+                <!-- pinned position-1 card — kept in sync with IDP_FEATURED_CARD in
+                     assets/js/premium-products.js, which reproduces this markup
+                     exactly so there's no swap/flash once the script takes over -->
+                <div class="product-card product-card-featured">
+                    <div class="flex-1">
+                        <h3 class="card-title">International Driving Permit</h3>
+                        <div class="card-stars">★★★★★</div>
+                        <div class="card-price">$39 – $109</div>
+                        <p class="card-desc">Digital or printed IDP, valid 1–3 years — accepted in 150+ countries.
+                            Start your application online in minutes.</p>
+                        <a href="application.html" class="btn card-cta">Start Application</a>
+                    </div>
+                    <div class="card-thumb"><img loading="lazy" decoding="async" width="204" height="153"
+                            src="assets/images/print-digital-thumb.png" alt="International Driving Permit"></div>
+                </div>
                 <div class="product-card product-card-skeleton">
                     <div class="flex-1">
                         <div class="skeleton-line skeleton-title"></div>

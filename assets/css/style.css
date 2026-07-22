@@ -2736,7 +2736,8 @@ img {
     line-height: 1.5;
 }
 
-.add-to-cart-btn {
+.add-to-cart-btn,
+.card-cta {
     margin-top: 16px;
     padding: 10px 20px;
     font-size: 14px;
@@ -2756,8 +2757,17 @@ img {
     flex: 1;
 }
 
-.product-card .add-to-cart-btn {
+.product-card .add-to-cart-btn,
+.product-card .card-cta {
     align-self: flex-start;
+}
+
+/* pinned IDP promo card at position 1 of the Guides & Checklists grid —
+   same treatment as .pricing-card.featured, so it reads as "the one to
+   pick" among the fetched WooCommerce guides around it */
+.product-card-featured {
+    border: 1.5px solid var(--olive);
+    background: linear-gradient(45deg, var(--olive-light), var(--white));
 }
 
 .pricing-title {
@@ -3145,9 +3155,17 @@ img {
 }
 
 .contact-info-value {
+    display: inline-block;
     font-size: 17px;
     font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
     margin-top: 4px;
+}
+
+a.contact-info-value:hover {
+    color: var(--olive);
+    text-decoration: underline;
 }
 
 .contact-info-sub {
